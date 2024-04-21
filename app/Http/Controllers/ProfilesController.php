@@ -24,14 +24,14 @@ class ProfilesController extends Controller
 
         } */
 
-        $postCount = $user->posts->count();
+        /* $postCount = $user->posts->count();
         $followersCount = $user->profile->followers->count();
-        $followingCount = $user->following->count();
+        $followingCount = $user->following->count(); */
     }
 
     public function edit(User $user){
         $this->authorize('update', $user->profile); //protect this route
-        return view('profiles.edit', compact('user', 'follows', 'postCount', 'followersCount', 'followingCount'));
+        return view('profiles.edit', compact('user'));
     }
 
     public function update(User $user)

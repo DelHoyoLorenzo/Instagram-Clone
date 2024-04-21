@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Mail\NewUserWelcomeMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
 //----------------temporary-mails-------------------------------
 Route::get('email', function(){
-    return new NewUserWelcomeMail(); //just to see how the user will see the mail
+    return new NewUserWelcomeMail; //just to see how the user will see the mail
 });
 
 //----------------follow----------------------------------------

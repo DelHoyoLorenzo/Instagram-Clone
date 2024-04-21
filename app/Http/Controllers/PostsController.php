@@ -5,23 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Models\Post;
+use App\Models\User;
 
 class PostsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-    } //we dont have to see the view /p/create until we are logged in
+        $this->middleware('auth');//we dont have to see the view /p/create until we are logged in
+    } 
 
-    public function index()
+    public function index(User $user) //render all posts in '/'
     {
         $users = auth()->user()->following()->pluck('profiles.user_id'); //colection of users that we follow
-
-        $posts = Post::whereIn('user_id', $users)->with('user')->orderBy('created_at','DESC')->paginate(5);
-        //or use latest() to order like that
-        //with('user') says to laravel just do one query instead of doing one query per iteration
-
-        return view('posts.index', compact('posts'));
+        
+        $profile = auth()->user()->profile;
+        $user = auth()->user();
+        /* dd($user); */
+        
+        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->get();
+        //or use orderBy('created_at','DESC') to order like that
+        //with('user')-> says to laravel just do one query instead of doing one query per iteration, look telescope
+        
+        return view('posts.index', compact('posts', 'profile', 'user'));
     }
 
 
@@ -44,7 +49,7 @@ class PostsController extends Controller
 
         //creating through a relationship
         //it will grab the authenticated user, it will go into their posts and create, laravel is gonna add the user id to it post, it is gonna make the relation with its user automatically
-        auth()->user()->posts()->create([
+        auth()->user()->posts->create([
             'caption' => $data['caption'],
             'image' => $imagePath
         ]);

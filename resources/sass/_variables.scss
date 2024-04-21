@@ -1,8 +1,24 @@
 // Body
 $body-bg: #000;
+$body-color: #fff;
 
 // Typography
 $font-family-sans-serif: 'Open Sans', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
-$color: white;
+$primary: white;
+
+$theme-colors: (
+  "primary": #fff,
+  "secondary": #000,
+  "danger": #ff4136,
+);
+
+$link-color: #fff;
+$text-color: #fff;
+$list-group-item: #fff;
+$h1-color: #fff;
+$h2-color: #fff;
+$h3-color: #fff;
+$h4-color: #fff;
+$h5-color: #fff;
