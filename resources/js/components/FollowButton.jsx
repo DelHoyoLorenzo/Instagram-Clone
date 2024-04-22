@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 function FollowButton({user_id}) {
     
-    const [status, setStatus] = useState(false);
+    const [status, setStatus] = useState(false); //it must be globall, or storaged. If I refresh the page the value resets
     
     const followUser = (user_id) =>
     {
@@ -21,7 +21,8 @@ function FollowButton({user_id}) {
 
     return (
         <div>
-            <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> { status ? 'Unfollow' : 'Follow'} </button>
+            { status ? <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Follow </button> : <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Unfollow </button>}
+            
         </div>
     );
 }
@@ -29,6 +30,7 @@ function FollowButton({user_id}) {
 export default FollowButton;
 
 const followButtonElement = document.getElementById('FollowButton');
+
 if (followButtonElement) {
     const Index = ReactDOM.createRoot(document.getElementById("FollowButton"));
     const userId = followButtonElement.getAttribute('user_id');

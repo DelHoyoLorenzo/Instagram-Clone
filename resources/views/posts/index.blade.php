@@ -13,8 +13,9 @@
                 <p class="fw-bold"><a class="text-decoration-none" href="/profile/{{$post->user->id}}">{{ $post->user->username }}</a></p>
             </div>
         </div>
+        {{-- image --}}
         <div class="col-6 offset-3">
-            <a href="/p/{{ $post->user->id }}">
+            <a href="/p/{{ $post->id }}">
                 <img class="w-100 rounded" src="/storage/{{ $post->image }}" alt="post-image">
             </a>
         </div>
@@ -43,6 +44,9 @@
                     <p>{{ $user->profile->description }}</p>
                 </div>
             </div>
+        </a>
+        <a href="">
+            <p>View all comments...</p>
         </a>
     </div>
 

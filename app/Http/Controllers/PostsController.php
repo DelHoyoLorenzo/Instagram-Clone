@@ -38,7 +38,7 @@ class PostsController extends Controller
     public function store()
     {
         $data = request()->validate([
-            /* 'another'=>'', */ //pass a different file without validate it
+            /* 'another'=>'', pass a different file without validate it */
             'caption'=>'required',
             'image'=> ['required', 'image'],
         ]);
@@ -49,12 +49,12 @@ class PostsController extends Controller
 
         //creating through a relationship
         //it will grab the authenticated user, it will go into their posts and create, laravel is gonna add the user id to it post, it is gonna make the relation with its user automatically
-        auth()->user()->posts->create([
+        auth()->user()->posts()->create([
             'caption' => $data['caption'],
             'image' => $imagePath
         ]);
 
-        /* \App\Models\Post::create($data); the line above already does what this line wants to do*/
+        /* \App\Models\Post::create($data); the line above already does what this line does*/
 
         return redirect('/profile/' . auth()->user()->id);
     }

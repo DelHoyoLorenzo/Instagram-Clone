@@ -25,4 +25,6 @@ Route::get('/p/create', [App\Http\Controllers\PostsController::class, 'create'])
 Route::get('/p/{post}', [App\Http\Controllers\PostsController::class, 'show'])->name('posts.show');
 Route::post('/p', [App\Http\Controllers\PostsController::class, 'store'])->name('posts.create');
 
-/* Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); */
+//----------------comments----------------------------------------
+
+Route::post('/comments/create/{post}', [App\Http\Controllers\CommentsController::class, 'create'])->name('comments.create');

@@ -59,7 +59,7 @@ class User extends Authenticatable
         //after creating an user (register)
         
         //mailtrap
-        Mail::to($user->email)->send(new NewUserWelcomeMail());
+            Mail::to($user->email)->send(new NewUserWelcomeMail());
         });
     }
 
@@ -73,8 +73,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Profile::class);
     }
 
-    public function posts() //plurar -> has many
+    public function posts() //plural -> has many
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function comments() //plural -> has many
+    {
+        return $this->hasMany(Comment::class);
     }
 }
