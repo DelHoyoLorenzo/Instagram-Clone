@@ -11,10 +11,12 @@ class ProfilesController extends Controller
     public function index(User $user)
     {
         $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
-        
+        $profile = auth()->user()->profile;
+
             return view('profiles.index', [ //data we send to the front, we render what is within this directory route in our project
                 'user' => $user,
-                'follows' => $follows
+                'follows' => $follows,
+                'profile' => $profile,
             ]);
         
         //we can save the counters in cache for 30 seconds and avoid reaching the database constantly

@@ -13,3 +13,4 @@ import './bootstrap';
  */
 
 import './components/FollowButton';
+import './components/LikeButton';

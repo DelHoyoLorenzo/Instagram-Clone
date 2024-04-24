@@ -9,7 +9,6 @@ function FollowButton({user_id}) {
     {
         axios.post(`/follow/${user_id}`)
         .then(response => {
-            console.log(response.data)
             setStatus(!status);
         })
         .catch(errors => {
@@ -21,8 +20,7 @@ function FollowButton({user_id}) {
 
     return (
         <div>
-            { status ? <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Follow </button> : <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Unfollow </button>}
-            
+            { status ? <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Unfollow </button> : <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Follow </button>}
         </div>
     );
 }

@@ -28,3 +28,7 @@ Route::post('/p', [App\Http\Controllers\PostsController::class, 'store'])->name(
 //----------------comments----------------------------------------
 
 Route::post('/comments/create/{post}', [App\Http\Controllers\CommentsController::class, 'create'])->name('comments.create');
+
+//----------------likes----------------------------------------
+
+Route::post('/like/{post}', [App\Http\Controllers\LikesController::class, 'store'])->name('posts.index');

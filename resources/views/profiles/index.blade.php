@@ -10,10 +10,12 @@
                 <div class="d-flex justify-content-between align-items-baseline">
                     <div class="d-flex align-items-center my-4">
                         <h4>{{$user->username}}</h2>
-                        <div id="FollowButton" user_id="{{ $user->id }}"></div>
-                        @if( $user->id != $user->profile->user_id)
-                            <FollowButton user_id="{{ $user->id }}"/>
+                            {{-- <FollowButton user_id="{{ $user->id }}"/> --}}
+                                
+                        @if( $profile->user_id != $user->profile->user_id)
+                            <div id="FollowButton" user_id="{{ $user->id }}"></div>
                         @endif
+
                         @can ('update', $user->profile)
                             <a href="/profile/{{ $user->id }}/edit"><button class="mx-2 btn btn-primary">Edit Profile</button></a>
                         @endcan
