@@ -20,7 +20,6 @@ class PostsController extends Controller
         
         $profile = auth()->user()->profile;
         $user = auth()->user();
-        /* dd($user); */
         
         $posts = Post::whereIn('user_id', $users)->with('user')->latest()->get();
         //or use orderBy('created_at','DESC') to order like that

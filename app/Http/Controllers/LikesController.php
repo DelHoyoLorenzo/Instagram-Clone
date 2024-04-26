@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class LikesController extends Controller
@@ -12,26 +14,22 @@ class LikesController extends Controller
     } 
 
     public function store($query)
-    {
+    {   
         $post_id = (int) $query;
+        $liked = auth()->user()->likes()->where('post_id', $post_id)->first()->like;
+        $user_id = auth()->user()->id;
+        $user = auth()->user();
         
-        /* $data = request()->validate([
-            '$query' => 'string',
-        ]); */
-
-        $existingLike = auth()->user()->likes()->where('post_id', $post_id)->first();
-
-        if ($existingLike) { 
-            $existingLike->update(['like' => !$existingLike->like]);
-            return 'Unliked successfully';
-        } else {
-            auth()->user()->likes()->create([
-                'like' => true,
-                'user_id' => auth()->user()->id,
-                'post_id' => $post_id,
-            ]);
-            return 'Liked successfully';
-        }
-
+        Like::updateOrCreate(
+            ['user_id' => $user_id, 'post_id' => $post_id],
+            ['like' => !$liked]
+        );
+        
+        return view('components.like-button', compact('user', 'liked', 'post_id', 'user_id'));
     }
 }
+
+    /* $users = auth()->user()->following()->pluck('profiles.user_id');
+    $profile = auth()->user()->profile;
+    
+    $posts = Post::whereIn('user_id', $users)->with('user')->latest()->get(); */
