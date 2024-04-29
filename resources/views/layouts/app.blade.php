@@ -12,11 +12,13 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Scripts -->
     @viteReactRefresh
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 <body>
     <div id="app">
@@ -84,5 +86,6 @@
             </main>
         </div>
     </div>
+    @livewireScripts
 </body>
 </html>

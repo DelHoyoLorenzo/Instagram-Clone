@@ -14,18 +14,21 @@ class LikesController extends Controller
     } 
 
     public function store($query)
-    {   
+    {
+
         $post_id = (int) $query;
-        $liked = auth()->user()->likes()->where('post_id', $post_id)->first()->like;
+        $like = auth()->user()->likes()->where('post_id', $post_id)->first();
+        /* $liked = auth()->user()->likes()->where('post_id', $post_id)->first()?->like; */
         $user_id = auth()->user()->id;
-        $user = auth()->user();
         
-        Like::updateOrCreate(
-            ['user_id' => $user_id, 'post_id' => $post_id],
-            ['like' => !$liked]
-        );
-        
-        return view('components.like-button', compact('user', 'liked', 'post_id', 'user_id'));
+        if($like->like !== null){
+            $like->update(['like' => !$like->like]);
+        }else{
+            Like::create(
+                ['user_id' => $user_id, 'post_id' => $post_id, 'like' => true],
+            );
+        }
+        return 'Liked or unliked succesfully';
     }
 }
 

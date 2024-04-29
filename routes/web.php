@@ -31,4 +31,4 @@ Route::post('/comments/create/{post}', [App\Http\Controllers\CommentsController:
 
 //----------------likes----------------------------------------
 
-Route::post('/like/{post}', [App\Http\Controllers\LikesController::class, 'store'])->name('posts.index');
+Route::post('/like/{post}', [App\Http\Controllers\LikesController::class, 'store']);

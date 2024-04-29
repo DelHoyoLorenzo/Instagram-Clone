@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 function FollowButton({user_id}) {
     
-    const [status, setStatus] = useState(false); //it must be globall, or storaged. If I refresh the page the value resets
+    const [status, setStatus] = useState(false); //it must be global, or storaged. If I refresh the page the value resets
     
     const followUser = (user_id) =>
     {
