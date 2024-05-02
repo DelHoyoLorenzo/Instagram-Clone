@@ -16,7 +16,6 @@
 
     <!-- Scripts -->
     @viteReactRefresh
-    @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @livewireStyles
 </head>
@@ -87,5 +86,7 @@
         </div>
     </div>
     @livewireScripts
+    @viteReactRefresh
+    @vite('resources/js/app.js')
 </body>
 </html>

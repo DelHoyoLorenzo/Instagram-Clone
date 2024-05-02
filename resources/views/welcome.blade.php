@@ -169,5 +169,7 @@
                 </div>
             </div>
         </div>
+        @viteReactRefresh
+        @vite('resources/js/app.js')
     </body>
 </html>

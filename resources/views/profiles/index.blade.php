@@ -10,10 +10,20 @@
                 <div class="d-flex justify-content-between align-items-baseline">
                     <div class="d-flex align-items-center my-4">
                         <h4>{{$user->username}}</h2>
-                            {{-- <FollowButton user_id="{{ $user->id }}"/> --}}
-                                
+                        {{-- <FollowButton user_id="{{ $user->id }}"/> --}}
+                        
+                        @php
+                        $isFollowed = false;
+                        foreach($user->following as $following){
+                            if($following->user_id == $profile->user_id){
+                                $isFollowed = true;
+                            }
+                        }
+                        
+                        @endphp
+                        {{ $isFollowed }}
                         @if( $profile->user_id != $user->profile->user_id)
-                            <div id="FollowButton" user_id="{{ $user->id }}"></div>
+                            <div id="FollowButton" user_id="{{ $user->id }}" isFollowed="{{ $isFollowed }}"></div>
                         @endif
 
                         @can ('update', $user->profile)

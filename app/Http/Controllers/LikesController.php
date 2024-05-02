@@ -17,7 +17,7 @@ class LikesController extends Controller
     {
 
         $post_id = (int) $query;
-        $like = auth()->user()->likes()->where('post_id', $post_id)->first();
+        $like = auth()->user()->likes()->where('post_id', $post_id)->firstOrNew();
         /* $liked = auth()->user()->likes()->where('post_id', $post_id)->first()?->like; */
         $user_id = auth()->user()->id;
         

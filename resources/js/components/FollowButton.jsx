@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-function FollowButton({user_id}) {
-    
-    const [status, setStatus] = useState(false); //it must be global, or storaged. If I refresh the page the value resets
+function FollowButton({user_id, isFollowed}) {
+
+    const [status, setStatus] = useState(isFollowed); //it must be global, or storaged. If I refresh the page the value resets
     
     const followUser = (user_id) =>
     {
@@ -32,9 +32,10 @@ const followButtonElement = document.getElementById('FollowButton');
 if (followButtonElement) {
     const Index = ReactDOM.createRoot(document.getElementById("FollowButton"));
     const userId = followButtonElement.getAttribute('user_id');
+    const isFollowed = followButtonElement.getAttribute('isFollowed');
     Index.render(
         <React.StrictMode>
-            <FollowButton user_id={userId}/>
+            <FollowButton user_id={userId} isFollowed={isFollowed}/>
         </React.StrictMode>
     )
 }
