@@ -21,7 +21,7 @@
                         }
                         
                         @endphp
-                        {{ $isFollowed }}
+                        
                         @if( $profile->user_id != $user->profile->user_id)
                             <div id="FollowButton" user_id="{{ $user->id }}" isFollowed="{{ $isFollowed }}"></div>
                         @endif

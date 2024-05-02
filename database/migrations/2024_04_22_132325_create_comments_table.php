@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('comment');
             $table->timestamps();
+            $table->boolean('enabled')->default(true);
         });
     }
 

@@ -10,11 +10,11 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'resources/js/app.js',
             ],
-            refresh: false,
+            refresh: true,
         }),
-        livewire({  // Here we add it to the plugins
+        /* livewire({
             refresh: ['resources/css/app.css'],
-        }),
+        }), */
         react(),
     ],
 });

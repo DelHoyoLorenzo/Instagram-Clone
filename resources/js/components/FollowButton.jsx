@@ -17,7 +17,7 @@ function FollowButton({user_id, isFollowed}) {
             }
         });
     }
-
+    
     return (
         <div>
             { status ? <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Unfollow </button> : <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Follow </button>}
