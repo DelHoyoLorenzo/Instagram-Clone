@@ -32,3 +32,10 @@ Route::post('/comments/create/{post}', [App\Http\Controllers\CommentsController:
 //----------------likes----------------------------------------
 
 Route::post('/like/{post}', [App\Http\Controllers\LikesController::class, 'store']);
+
+//----------------chats----------------------------------------
+Route::get('/inbox', [App\Http\Controllers\Chats\ChatsController::class, 'show']);
+Route::get('/chats/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 'create']);
+
+//----------------messages----------------------------------------
+Route::get('/messages/{user}', [App\Http\Controllers\Messages\MessagesController::class, 'show']);

@@ -25,7 +25,9 @@
                         @if( $profile->user_id != $user->profile->user_id)
                             <div id="FollowButton" user_id="{{ $user->id }}" isFollowed="{{ $isFollowed }}"></div>
                         @endif
-
+                        
+                        <a href="/chats/{{ $user->profile->user_id }}"><button class="mx-2 btn btn-primary">Message</button></a>
+                        {{-- #262626 bg button color --}}
                         @can ('update', $user->profile)
                             <a href="/profile/{{ $user->id }}/edit"><button class="mx-2 btn btn-primary">Edit Profile</button></a>
                         @endcan
