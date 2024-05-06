@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\Post;
 
 class LikesController extends Controller
 {
@@ -15,7 +16,7 @@ class LikesController extends Controller
     {
 
         $post_id = (int) $query;
-        $like = auth()->user()->likes()->where('post_id', $post_id)->firstOrNew();
+        $like = auth()->user()->likes()->where('post_id', $post_id)->firstOrNew(); // have I liked this post?
         $user_id = auth()->user()->id;
         
         if($like->like !== null){
@@ -26,16 +27,21 @@ class LikesController extends Controller
             );
         } //updateOrCreate
 
+        $current_post = Post::find($post_id);
+        $true_post_likes = $current_post->likes()->where('like', 1)->count();
+        /* $true_post_likes = $current_post->likes->filter(function ($like) {
+            return $like->like;
+        }); */
+        /* dd($true_post_likes); */
         /*
-
+        
         $like->date->now | liberia -> carbon
         $like ->save()
         FECHAS
         
         */
 
-
-        return 'Liked or unliked succesfully'; //retornar cantidad de likes
+        return response()->json(['true_post_likes' => $true_post_likes]);
     }
 }
 
