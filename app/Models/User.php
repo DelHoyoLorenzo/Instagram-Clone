@@ -90,6 +90,6 @@ class User extends Authenticatable
 
     public function chats()
     {
-        return $this->hasMany(Chat::class);
+        return $this->belongsToMany(Chat::class);
     }
 }

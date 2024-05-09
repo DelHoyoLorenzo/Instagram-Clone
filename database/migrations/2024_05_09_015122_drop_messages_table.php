@@ -11,12 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chats', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('sender_user_id')->references('id')->on('users');
-            $table->foreignId('receiver_user_id')->references('id')->on('users');
-            $table->timestamps();
-        });
+        Schema::dropIfExists('messages');
     }
 
     /**
@@ -24,6 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chats');
+        //
     }
 };

@@ -15,8 +15,9 @@ class ChatsController extends Controller
 
     public function show()
     {
-        $chats = Chat::where('sender_user_id', auth()->user()->id)->orWhere('recipient_user_id', auth()->user()->id)
-        ->get();
+        /* $chats = Chat::where('sender_user_id', auth()->user()->id)->orWhere('recipient_user_id', auth()->user()->id)
+        ->get(); */
+        $chats = auth()->user()->chats;
         //return the conversations that the logged user have
         
         return view('chats.index', ['chats'=>$chats]);
@@ -26,22 +27,38 @@ class ChatsController extends Controller
     {
         $receiver_user_id = (int) $receiver_user_id;
         
+        $user = auth()->user();
 
-    // case 2: already has a chat with the receiver
-        //first ask if the chats already exist
-        $chats = Chat::where('sender_user_id', auth()->user()->id)->orWhere('recipient_user_id', auth()->user()->id)
-        ->get();// I should return the chats ordered by time, on a DESC way
+        $existingChat = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
+            $query->where('user_id', $receiver_user_id);
+        })
+        ->whereHas('users', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->first();
+        // case 2: already exists a chat with that person
+        // first ask if the chats already exist
+        // find a Chat that has an user_id that matches with the received_user_id 
+        
+        // TODO I should return the chats ordered by time, on a DESC way
 
-        if($chats){
-            // just return all the chats of the auth user, each with their messages
-            /* $chats */
+        /* dd($existingChat); */
+
+        if ($existingChat) {
+            $chats = Chat::all();
             return view('chats.index', ['chats'=>$chats]);
         }
 
-    // case 1: first time auth user talks to receiver user
+        // case 1: first time auth user talks to receiver user
         // create and return the chat with no messages in it, and also all the chats that the user has and also which ones that he received from others
         
-        Chat::create(['sender_user_id'=>auth()->user()->id, 'receiver_user_id'=>$receiver_user_id]);
-        return view('chats.index', ['chats'=>$chats]);
+        // Create a new chat
+        $newChat = new Chat();
+        $newChat->save();
+        $chats = Chat::all();
+        // Attach users to the new chat
+        $newChat->users()->attach([$user->id, $receiver_user_id]);
+        
+        return view('chats.index', ['chat' => $chats]);
     }
 }

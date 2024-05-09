@@ -23,7 +23,9 @@
     <div id="app">
         <div class="container d-flex">
             @auth
-                @include('components.sideBar')
+                @if (request()->path() !== 'inbox')
+                    @include('components.sideBar')
+                @endif
             @endauth
             <main style="margin-left: 16%; width: 100%;">
                 @yield('content')

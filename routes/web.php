@@ -38,4 +38,5 @@ Route::get('/inbox', [App\Http\Controllers\Chats\ChatsController::class, 'show']
 Route::get('/chats/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 'create']);
 
 //----------------messages----------------------------------------
-Route::get('/messages/{user}', [App\Http\Controllers\Messages\MessagesController::class, 'show']);
+Route::get('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'show']);
+Route::post('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'create']);
