@@ -9,13 +9,19 @@ use Illuminate\View\Component;
 class Chat extends Component
 {
    /*  CHAT COMPONENT */
-   public $messages;
+    public $messages;
+    public $chatId;
+    public $receiverUserId;
+    public $receiverUser;
 
-    public function __construct()
+    public function __construct($messages, $receiverUserId, $chatId, $receiverUser)
     {
-        $this->messages;
+        $this->messages = $messages;
+        $this->chatId = $chatId;
+        $this->receiverUserId = $receiverUserId;
+        $this->receiverUser = $receiverUser;
     }
-   
+
     public function render(): View|Closure|string
     {
         return view('components.chat');

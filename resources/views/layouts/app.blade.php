@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <div class="container d-flex">
+        <div class="d-flex">
             @auth
                 @if (request()->path() !== 'inbox')
                     @include('components.sideBar')

@@ -26,7 +26,7 @@
                             <div id="FollowButton" user_id="{{ $user->id }}" isFollowed="{{ $isFollowed }}"></div>
                         @endif
                         
-                        <a href="/chats/{{ $user->profile->user_id }}"><button class="mx-2 btn btn-primary">Message</button></a>
+                        <a href="/messages/{{ $user->profile->user_id }}"><button class="mx-2 btn btn-primary">Message</button></a>
                         {{-- #262626 bg button color --}}
                         @can ('update', $user->profile)
                             <a href="/profile/{{ $user->id }}/edit"><button class="mx-2 btn btn-primary">Edit Profile</button></a>
@@ -68,7 +68,6 @@
                     @else
                         <p>No image available</p>
                     @endif
-                    <h2 class="my-1">{{ $post->caption }}</h2>
                 </a>
             </div>
             @endforeach

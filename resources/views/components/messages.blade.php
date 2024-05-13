@@ -3,7 +3,7 @@
     <x-chat />
 </div>
 {{-- where I reach create message endpoint | TODO it has not be shown if I did not click a chat --}}
-<form class="d-flex align-items-baseline justify-content-between" action="/messages/{{ auth()->user()->id }}" enctype="multipart/form-data" method="post">
+{{-- <form class="d-flex align-items-baseline justify-content-between" action="/messages/{{ auth()->user()->id }}" enctype="multipart/form-data" method="post">
     @csrf
     @foreach($chat->users as $user)
         @if($user->id == auth()->user()->id)
@@ -22,4 +22,4 @@
         </span>
     @enderror
     <button type="submit" class="bg-body text-primary border-0 fw-bold">Post</button>
-</form>
+</form> --}}
