@@ -23,8 +23,6 @@ class MessageEventController extends Controller
             'receiver_user_id' => (int) $request->json('receiver_user_id'), 
             'chat_id' => $chat_id,
         ]);
-
-        /* dd($message); */
         
         /* $messages = Message::where('chat_id', $chat_id)->get(); */
 
@@ -41,8 +39,8 @@ class MessageEventController extends Controller
         $receiver_id = $firstReceiver['id']; */
 
         event(new MessageSent($message));
+        /* MessageSent::dispatch($message); */
 
-        /* return view('chats.index', ['messages'=>$messages, 'chat_id'=>$chat_id ,'chats'=>$chats, 'receiver_user_id'=>$receiver_id]); */
         return response()->json(['message'=> $message]);
     }
 }

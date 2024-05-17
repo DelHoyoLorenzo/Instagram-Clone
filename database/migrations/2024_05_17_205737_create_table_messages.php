@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('receiver_user_id')->references('id')->on('users');
             $table->text('content');
             $table->timestamps();
+            $table->boolean('seen')->default(false);
+            $table->timestamp('seen_at')->nullable();
         });
     }
 
@@ -26,6 +28,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::table('messages', function (Blueprint $table) {
+            //
+        });
     }
 };

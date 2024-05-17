@@ -99,3 +99,10 @@
         </div>
     </div>
 </nav>
+
+<script>
+    Echo.channel('notification')
+    .listen('MessageNotification', (e)=>{
+        
+    })
+</script>

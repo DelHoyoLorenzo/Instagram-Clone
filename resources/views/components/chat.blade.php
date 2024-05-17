@@ -44,7 +44,7 @@
 
             {{-- right side --}}
             <div id="right-messages" class="col-md-6 py-1">
-                <div id="sender-messages" class="d-flex align-items-center justify-content-end gap-2">
+                <div id="sender-messages" class="d-flex flex-column align-items-end  justify-content-end gap-2">
 
                 </div>
             </div>
@@ -140,6 +140,6 @@
             document.getElementById('receiver-messages').appendChild(messageElement);
         }
     });
-</script>  
+</script>
 
 <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
