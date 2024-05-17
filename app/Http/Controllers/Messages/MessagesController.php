@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Messages;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\Message;
@@ -34,16 +35,19 @@ class MessagesController extends Controller
 
     public function create($chat_id)
     {
+        /* dd(request('content')); */
         $chat_id = (int) $chat_id;
 
-        Message::create([
+        $message = Message::create([
             'content'=>request('content'), 
             'sender_user_id'=>request('sender_user_id'), 
             'receiver_user_id'=>request('receiver_user_id'), 
             'chat_id'=>request('chat_id')
         ]);
+
+        /* dd($message); */
         
-        $messages = Message::where('chat_id', $chat_id)->get();
+        /* $messages = Message::where('chat_id', $chat_id)->get(); */
 
         $chats = auth()->user()->chats;
         $currentChat = $chats->firstWhere('id', $chat_id);
@@ -57,6 +61,10 @@ class MessagesController extends Controller
         $firstReceiver = reset($receivers);
         $receiver_id = $firstReceiver['id'];
 
-        return view('chats.index', ['messages'=>$messages, 'chat_id'=>$chat_id ,'chats'=>$chats, 'receiver_user_id'=>$receiver_id]);
+        event(new MessageSent($message));
+
+        /* return view('chats.index', ['messages'=>$messages, 'chat_id'=>$chat_id ,'chats'=>$chats, 'receiver_user_id'=>$receiver_id]); */
+        /* return response()->json(['message' => $message]); */
+        /* return redirect('messages/'.$chat_id); */
     }
 }

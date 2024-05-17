@@ -9,11 +9,14 @@
         "intervention/image": "^3.5",
         "intervention/image-laravel": "^1.2",
         "laravel/framework": "^11.0",
+        "laravel/reverb": "@beta",
+        "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
         "livewire/livewire": "^3.4",
-        "overtrue/laravel-like": "^5.3"
+        "overtrue/laravel-like": "^5.3",
+        "pusher/pusher-php-server": "^7.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

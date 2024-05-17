@@ -13,57 +13,127 @@
         @foreach($messages as $message)
             <div class="row">
                 <div class="col-md-6 py-1">
-                    @if(auth()->user()->id == $message->sender_user_id)
+                    @if(auth()->user()->id != $message->sender_user_id)
                         <div class="d-flex align-items-center gap-2">
-                            <div style="width: 15%">
+                            <div id="receiver-profile-picture" style="width: 15%">
                                 <a href="/profile/{{$message->chat->users->firstWhere('id', $message->sender_user_id)->profile->id}}">
-                                    <img class="rounded-circle w-100" src="{{ $message->chat->users->firstWhere('id', $message->sender_user_id)->profile->profileImage() }}" alt="logged-in-user-profile-picture">
+                                    <img class="rounded-circle w-100" src="{{ $message->chat->users->firstWhere('id', $message->receiver_user_id)->profile->profileImage() }}" alt="logged-in-user-profile-picture">
                                 </a>
                             </div>
-                            <p class="m-0">{{ $message->content }}</p>
+                            <p class="m-0" style='padding: 7px 12px; background-color: rgb(41, 41, 41); border-radius: 20px;'>{{ $message->content }}</p>
                         </div>
                     @endif
                 </div>
                 <div class="col-md-6 py-1">
-                    @if(auth()->user()->id != $message->sender_user_id)
-                        <div class="d-flex align-items-center gap-2">
-                            <div style="width: 10%">
-                                <a href="/profile/{{$message->chat->users->firstWhere('id', $message->receiver_user_id)->profile->id}}">
-                                    <img class="w-100 rounded-circle" src="{{ $message->chat->users->firstWhere('id', $message->receiver_user_id)->profile->profileImage() }}" alt="receiver-profile-picture">
-                                </a>
-                            </div>
-                            <p class="m-0">{{ $message->content }}</p>
+                    @if(auth()->user()->id == $message->sender_user_id)
+                        <div class="d-flex align-items-center justify-content-end gap-2">
+                            <p class="m-0" style='padding: 7px 12px; background-color: rgb(55, 151, 240); border-radius: 20px;'>{{ $message->content }}</p>
                         </div>
                     @endif
                 </div>
             </div>
         @endforeach
+        <div class="row">
+            <div class="col-md-6 py-1">
+                <div id="receiver-messages" class="d-flex align-items-center gap-2">
+                    {{-- <div style="width: 15%">
+                        <a href="/profile/{{$message->chat->users->firstWhere('id', $message->receiver_user_id)->profile->id}}">
+                            <img class="rounded-circle w-100" src="{{ $message->chat->users->firstWhere('id', $message->receiver_user_id)->profile->profileImage() }}" alt="logged-in-user-profile-picture">
+                        </a>
+                    </div> --}}
+                    
+                </div>
+            </div>
+
+            {{-- DERECHA --}}
+            <div class="col-md-6 py-1">
+                <div id="sender-messages" class="d-flex align-items-center justify-content-end gap-2">
+
+                </div>
+            </div>
+
+        </div>
+
     </div>
-    
     <div class="w-100 border-1 bg-body px-2">
-        <form class="d-flex justify-content-between" action="/messages/{{ $chatId }}" enctype="multipart/form-data" method="post" style="border: 1px solid white; border-radius: 15px;">
+        <form {{-- action="/eventMessage/{{ $chatId }}" method="post" --}} id="messageForm" class="d-flex justify-content-between" style="border: 1px solid white; border-radius: 15px;">
             @csrf
             {{-- @foreach($chat->users as $user)
                 @if($user->id == auth()->user()->id)
-                    <input type="hidden" id="sender_user_id" name="sender_user_id" value="{{ auth()->user()->id }}"/>
-                    @else
-                    <input type="hidden" id="receiver_user_id" name="receiver_user_id" value="{{ $user->id }}">
-                    @endif
-                    @endforeach --}}
-                    
+                <input type="hidden" id="sender_user_id" name="sender_user_id" value="{{ auth()->user()->id }}"/>
+                @else
+                <input type="hidden" id="receiver_user_id" name="receiver_user_id" value="{{ $user->id }}">
+                @endif
+                @endforeach --}}
+                
             <input type="hidden" id="receiver_user_id" name="receiver_user_id" value="{{ $receiverUserId }}">
             <input type="hidden" id="sender_user_id" name="sender_user_id" value="{{ auth()->user()->id }}"/>
             <input type="hidden" id="chat_id" name="chat_id" value="{{ $chatId }}">
-            <input class="m-1 bg-body text-primary border-0" id="content" type="text" class="form-control @error('content') is-invalid @enderror" name="content" value="{{ old('content') }}" autocomplete="content" placeholder="Message..." required>
+            <input class="m-1 bg-body text-primary border-0" id="content" type="text"{{--  class="@error('content') is-invalid @enderror" --}} name="content" {{-- value="{{ old('content') }}" --}} {{-- autocomplete="content" --}} placeholder="Message..." required>
             
-            @error('content')
+            {{-- @error('content')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
-            @enderror
-            <button type="submit" class="m-1 bg-body border-0 fw-bold" style="color:#0095f6">Send</button>
+            @enderror --}}
+            <button id="sendMessageBtn" type="button" class="m-1 bg-body border-0 fw-bold" style="color:#0095f6">Send</button>
         </form>
+        <script>
+            $(document).ready(function(){
+                $('#sendMessageBtn').click(function(event){
+                    event.preventDefault();
+                    var chatId = $('#chat_id').val();
+
+                    var formData = $('#messageForm').serialize();
+
+                    var data = {
+                        content: $('#content').val(),
+                        sender_user_id: $('#sender_user_id').val(),
+                        receiver_user_id: $('#receiver_user_id').val(),
+                        chat_id: $('#chat_id').val()
+                    };
+
+                    $.ajax({
+                        url: `http://127.0.0.1:8000/api/eventMessage/${chatId}`,
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        processData: false,
+                        contentType: false,
+                        success: function(response){
+                            console.log(response);
+                        },
+                        error: function(xhr, textStatus, errorThrown){
+                            console.error(errorThrown);
+                        }
+                    });
+                })
+            })
+        </script>
     </div>
 </div>
+
+<script type="module">
+    window.Echo.channel('chat')
+    .listen('MessageSent', (e) => {
+        let message = e.eventMessage;
+
+        let messageElement = document.createElement('p');
+
+        messageElement.textContent = message.content;
+        messageElement.style.padding = "7px 12px";
+        messageElement.style.borderRadius = "20px";
+        messageElement.style.margin = "0px";
+
+        if(message.sender_user_id !== $('#sender_user_id').val()){
+            messageElement.style.backgroundColor = "rgb(55, 151, 240)";
+            document.getElementById('sender-messages').appendChild(messageElement);
+        }else{
+            messageElement.style.backgroundColor = "rgb(41, 41, 41)";
+            document.getElementById('receiver-messages').appendChild($('#receiver-profile-picture'));
+            document.getElementById('receiver-messages').appendChild(messageElement);
+        }
+    });
+</script>  
 
 <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->

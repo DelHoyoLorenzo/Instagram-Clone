@@ -15,9 +15,10 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    @livewireStyles
+    {{-- <script src='resources/js/bootstrap.js'></script>   --}} 
 </head>
 <body>
     <div id="app">
@@ -32,8 +33,5 @@
             </main>
         </div>
     </div>
-    @livewireScripts
-    @viteReactRefresh
-    @vite('resources/js/app.js')
 </body>
 </html>

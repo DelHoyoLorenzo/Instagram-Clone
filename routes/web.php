@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\MessageNotification;
+use App\Events\MessageSent;
 use App\Mail\NewUserWelcomeMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +41,8 @@ Route::get('/chats/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 
 
 //----------------messages----------------------------------------
 Route::get('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'show']);
-Route::post('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'create']);
+/* Route::post('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'create']); */
+
+/* Route::get('/event', function(){
+    event(new MessageSent('im in the event'));
+}); */
