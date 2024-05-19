@@ -45,4 +45,25 @@
     @endif
 
 </div>
+<script type="module">
+    window.Echo.channel('notification')
+    .listen('MessageNotification', (e)=>{
+        console.log('sidebar',e) //it comes the right data, when im in /inbox not working on /messages/1
+        /* let unseenChats = [];
+
+        let currentChatId = e.notificationMessage.chat_id;
+        unseenChats.push(currentChatId)
+        console.log(unseenChats) */
+        //check if the message was sent NOT by the auth user
+        // check if the message has been seen?
+        // store the chat ids so you count if the chat_id is not in an array of unseen chats
+
+        /* $(#'notification').appendChild(1) */
+        /* if(unseenChats.find( id => id===currentChatId )){
+            let e.notificationMessage.content
+        } */
+        
+        //when the message is seen by the auth user remove the notification o decrease the number of unseen chats
+    })
+</script>
 @endsection

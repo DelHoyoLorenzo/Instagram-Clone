@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageNotification;
 use App\Events\MessageSent;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -39,7 +40,11 @@ class MessageEventController extends Controller
         $receiver_id = $firstReceiver['id']; */
 
         event(new MessageSent($message));
-        /* MessageSent::dispatch($message); */
+        /* MessageSent::dispatch($message); !this line does not work */
+
+        // I have to check if the auth user is not looking the chat, or in the chat view
+        // I have to send a notification in any case, does not matter if the user is chatting
+        event(new MessageNotification($message));
 
         return response()->json(['message'=> $message]);
     }

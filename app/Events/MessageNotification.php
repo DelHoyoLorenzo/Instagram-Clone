@@ -32,4 +32,11 @@ class MessageNotification implements ShouldBroadcast
             new Channel('notification'),
         ];
     }
+
+    public function broadcastWith()
+    {
+        return [
+            'notificationMessage' => $this->message,
+        ];
+    }
 }
