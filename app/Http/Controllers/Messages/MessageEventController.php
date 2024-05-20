@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Messages;
 
 use App\Events\MessageNotification;
 use App\Events\MessageSent;
+use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
 
 class MessageEventController extends Controller
 {
-    public function show($chat_id)
-    {
-        dd($chat_id);
-    }
-
     public function create($chat_id, Request $request)
     {
         $chat_id = (int) $chat_id;

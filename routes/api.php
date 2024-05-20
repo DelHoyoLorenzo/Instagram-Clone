@@ -8,7 +8,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 //----------------event messages & notification----------------------------------------
-Route::post('/eventMessage/{chat}', [App\Http\Controllers\MessageEventController::class, 'create']);
+Route::post('/eventMessage/{chat}', [App\Http\Controllers\Messages\MessageEventController::class, 'create']);
+
+//---------------- update Messages to seen ----------------------------------------
+Route::get('/seen/{chat}', [App\Http\Controllers\Messages\MarkSeenMessages::class, 'update']);
 
 //----------------test--------------------------------------------------
 Route::get('/test', function () {

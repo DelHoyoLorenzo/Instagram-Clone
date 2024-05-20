@@ -118,6 +118,36 @@
         </script>
     </div>
 </div>
+<script>
+    // When I load this component, I want to set the messages on seen
+    // Also when a new message is received and I am on this route
+    var chatId = $('#chat_id').val();
+    const setMessagesSeen = () => {
+        /* var csrfToken = document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN')).split('=')[1]; */
+        let authId = $('#sender_user_id').val();
+
+        var data = {
+            userId: authId,
+        };
+
+        $.ajax({
+            url: `http://127.0.0.1:8000/api/seen/${chatId}`,
+            type: 'GET',
+            /* headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }, */
+            contentType: 'application/json',
+            data: data,
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.error(errorThrown);
+            }
+        });
+    };
+    setMessagesSeen();
+</script>
 
 <script type="module">
     window.Echo.channel('chat')
@@ -139,6 +169,9 @@
             document.getElementById('receiver-messages').appendChild($('#receiver-profile-picture')[0]);
             document.getElementById('receiver-messages').appendChild(messageElement);
         }
+        // make a petition, set message seen
+        var chatId = $('#chat_id').val();
+        setMessagesSeen();
     });
 </script>
 

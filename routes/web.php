@@ -1,7 +1,5 @@
 <?php
 
-use App\Events\MessageNotification;
-use App\Events\MessageSent;
 use App\Mail\NewUserWelcomeMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
