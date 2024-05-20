@@ -37,14 +37,14 @@
         <div class="row">
             {{-- left side --}}
             <div id="left-messages" class="col-md-6 py-1">
-                <div id="receiver-messages" class="d-flex align-items-center gap-2">
+                <div id="receiver-messages" class="d-flex flex-column align-items-md-start gap-2">
                     
                 </div>
             </div>
 
             {{-- right side --}}
             <div id="right-messages" class="col-md-6 py-1">
-                <div id="sender-messages" class="d-flex flex-column align-items-end  justify-content-end gap-2">
+                <div id="sender-messages" class="d-flex flex-column align-items-end justify-content-end gap-2">
 
                 </div>
             </div>
@@ -120,10 +120,11 @@
 </div>
 <script>
     // When I load this component, I want to set the messages on seen
-    // Also when a new message is received and I am on this route
-    var chatId = $('#chat_id').val();
+
     const setMessagesSeen = () => {
         /* var csrfToken = document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN')).split('=')[1]; */
+
+        let chatId = $('#chat_id').val();
         let authId = $('#sender_user_id').val();
 
         var data = {
@@ -153,25 +154,24 @@
     window.Echo.channel('chat')
     .listen('MessageSent', (e) => {
         let message = e.eventMessage;
-
+        
         let messageElement = document.createElement('p');
-
+        
         messageElement.textContent = message.content;
         messageElement.style.padding = "7px 12px";
         messageElement.style.borderRadius = "20px";
         messageElement.style.margin = "0px";
-
-        if(message.sender_user_id === Number($('#sender_user_id').val())){ //right side
+        
+        if(message.sender_user_id === Number($('#sender_user_id').val())){ // right side
             messageElement.style.backgroundColor = "rgb(55, 151, 240)";
             document.getElementById('sender-messages').appendChild(messageElement);
-        }else{ //left side
+        }else{ // left side
             messageElement.style.backgroundColor = "rgb(41, 41, 41)";
-            document.getElementById('receiver-messages').appendChild($('#receiver-profile-picture')[0]);
+            /* document.getElementById('receiver-messages').appendChild($('#receiver-profile-picture')[0]); */
             document.getElementById('receiver-messages').appendChild(messageElement);
+            // make a petition, set message seen when I get a new message from the other user
+            setMessagesSeen();
         }
-        // make a petition, set message seen
-        var chatId = $('#chat_id').val();
-        setMessagesSeen();
     });
 </script>
 
