@@ -13,6 +13,9 @@ Route::post('/eventMessage/{chat}', [App\Http\Controllers\Messages\MessageEventC
 //---------------- update Messages to seen ----------------------------------------
 Route::get('/seen/{chat}', [App\Http\Controllers\Messages\MarkSeenMessages::class, 'update']);
 
+//---------------- notification ----------------------------------------
+Route::get('/newMessageNotification', [App\Http\Controllers\Notifications\MessageNotificationController::class, 'index']);
+
 //----------------test--------------------------------------------------
 Route::get('/test', function () {
     return response()->json(['message' => 'API is working']);

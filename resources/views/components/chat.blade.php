@@ -146,6 +146,17 @@
                 console.error(errorThrown);
             }
         });
+
+        $.ajax({
+            url: `http://127.0.0.1:8000/api/newMessageNotification`,
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.error(errorThrown);
+            }
+        })
     };
     setMessagesSeen();
 </script>
@@ -171,6 +182,16 @@
             document.getElementById('receiver-messages').appendChild(messageElement);
             // make a petition, set message seen when I get a new message from the other user
             setMessagesSeen();
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/newMessageNotification`,
+                type: 'GET',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.error(errorThrown);
+                }
+            })
         }
     });
 </script>

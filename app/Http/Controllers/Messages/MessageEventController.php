@@ -38,7 +38,6 @@ class MessageEventController extends Controller
         event(new MessageSent($message));
         /* MessageSent::dispatch($message); !this line does not work */
 
-        // I have to check if the auth user is not looking the chat, or in the chat view
         // I have to send a notification in any case, does not matter if the user is chatting
         event(new MessageNotification($message));
 
