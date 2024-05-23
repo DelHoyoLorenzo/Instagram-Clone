@@ -54,7 +54,7 @@ function LikeButton(props) {
 
 export default LikeButton;
 
-document.querySelectorAll('.likeButton').forEach(likeButtonElement => {
+/* document.querySelectorAll('.likeButton').forEach(likeButtonElement => {
     const postId = likeButtonElement.getAttribute('post_id');
     const liked = likeButtonElement.getAttribute('liked');
     const userId = likeButtonElement.getAttribute('user_id');
@@ -67,4 +67,4 @@ document.querySelectorAll('.likeButton').forEach(likeButtonElement => {
             <LikeButton post_id={postId} liked={liked} user_id={userId} key={key} />
         </React.StrictMode>
     );
-});
+}); */

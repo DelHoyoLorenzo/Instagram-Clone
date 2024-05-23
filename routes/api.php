@@ -3,9 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::get('/user', function (Request $request) { return $request->user(); })->middleware('auth:sanctum');
+
+//----------------messages----------------------------------------
+
+Route::get('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'show'])->middleware('auth:sanctum');
 
 //----------------event messages & notification----------------------------------------
 Route::post('/eventMessage/{chat}', [App\Http\Controllers\Messages\MessageEventController::class, 'create']);

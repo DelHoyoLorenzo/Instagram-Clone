@@ -13,7 +13,7 @@ class MessageEventController extends Controller
     public function create($chat_id, Request $request)
     {
         $chat_id = (int) $chat_id;
-
+        
         $message = Message::create([
             'content' => $request->json('content'),
             'sender_user_id' => (int) $request->json('sender_user_id'), 

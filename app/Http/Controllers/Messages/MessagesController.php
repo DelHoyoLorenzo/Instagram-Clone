@@ -6,31 +6,30 @@ use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MessagesController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth'); //we only are allowed to comment if we are logged in
-    }
-
     public function show($chat_id)
     {
         $chat_id = (int) $chat_id;
         $messages = Message::where('chat_id', $chat_id)->get();
-        $chats = auth()->user()->chats;
-
-        $usersInvolved = Chat::find($chat_id)->users->toArray(); // which is the format after I called find method to a db table??
+        $user = auth()->user();
         
-        $receivers = array_filter($usersInvolved, function ($user) {
+        $users_involved = Chat::find($chat_id)->users->toArray(); // which is the data format received after I called find method to a db table??
+        
+        $receivers = array_filter($users_involved, function ($user) {
             return $user['id'] !== auth()->user()->id;
         });
+        
+        $first_receiver = reset($receivers);
+        $receiver_id = $first_receiver['id'];
+        $receiver_user = User::find($receiver_id);
 
-        $firstReceiver = reset($receivers);
-        $receiver_id = $firstReceiver['id'];
-
-        return view('chats.index', ['messages'=>$messages, 'chat_id'=>$chat_id ,'chats'=>$chats, 'receiver_user_id'=>$receiver_id]);
+        return response()->json(['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]);
+        /* return Inertia::render('Components/chat', ['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]); */
     }
 
     public function create($chat_id)

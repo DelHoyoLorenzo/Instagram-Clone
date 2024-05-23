@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,10 +16,13 @@
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @routes
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @inertiaHead
 </head>
 <body>
+    @inertia
     <div id="app">
         <div class="d-flex">
             @auth

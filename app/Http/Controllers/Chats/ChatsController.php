@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Chats;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ChatsController extends Controller
 {
@@ -15,12 +16,12 @@ class ChatsController extends Controller
 
     public function show()
     {
-        /* $chats = Chat::where('sender_user_id', auth()->user()->id)->orWhere('recipient_user_id', auth()->user()->id)
-        ->get(); */
-        $chats = auth()->user()->chats;
+        $chats = auth()->user()->chats()->with('users')->get(); // only works with the relation chats() with the parentesis dnw
+        
         //return the conversations that the logged user have
         
-        return view('chats.index', ['chats'=>$chats]);
+        return Inertia::render('Chats/Index', ['chats'=>$chats]);
+        /* return view('chats.index', ['chats'=>$chats]); */
     }
 
     public function create($receiver_user_id)

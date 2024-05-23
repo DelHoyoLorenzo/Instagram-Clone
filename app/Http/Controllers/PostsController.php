@@ -6,14 +6,10 @@ use Illuminate\Http\Request;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Models\Post;
 use App\Models\User;
+use Inertia\Inertia;
 
 class PostsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');//we dont have to see the view /p/create until we are logged in
-    } 
-
     public function index(User $user) //render all posts in '/'
     {
         $users = auth()->user()->following()->pluck('profiles.user_id'); //colection of users that we follow
@@ -25,7 +21,13 @@ class PostsController extends Controller
         //or use orderBy('created_at','DESC') to order like that
         //with('user')-> says to laravel just do one query instead of doing one query per iteration, look telescope
         
-        return view('posts.index', compact('posts', 'profile', 'user'));
+        /* return view('posts.index', compact('posts', 'profile', 'user')); */
+
+        return Inertia::render('Feed/Index', [
+            'posts'=>$posts,
+            'profile'=>$profile,
+            'user'=>$user
+        ]);
     }
 
 

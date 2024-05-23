@@ -1,20 +1,14 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
-import livewire from '@defstudio/vite-livewire-plugin';
+import path from 'path';
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: [
-                'resources/sass/app.scss',
-                'resources/js/app.js',
-            ],
+            input: 'resources/js/app.jsx',
             refresh: true,
         }),
-        /* livewire({
-            refresh: ['resources/css/app.css'],
-        }), */
         react(),
     ],
 });
