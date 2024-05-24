@@ -14,12 +14,36 @@ function Chat({id, messages, userId, user, authUser}) {
         content: "",
     })
 
+    async function setSeenMessages(){
+        let info = {
+            userId: authUser.id,
+        }
+
+        try {
+            let { data } = await axios.get(`http://localhost:8000/api/seen/${chatId}`, info);
+
+            if(data){
+                console.log(data)
+            }
+        
+        } catch (error) {
+            console.log(error.message)    
+        }
+    }
+
     useEffect(()=>{
         const messagesDiv = document.getElementById('messages');
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
         
+        // swap seen attribute to true
+        setSeenMessages();
+
         window.Echo.channel('chat').listen('MessageSent', (e) => {
             setNewMessages(prevMessages => [...prevMessages, e.eventMessage]);
+            if(e.eventMessage.sender_user_id !== authUser.id){
+                setSeenMessages();
+            }
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
         
         
@@ -123,22 +147,6 @@ function Chat({id, messages, userId, user, authUser}) {
                 }
             )
             ): null}
-
-            <div class="row">
-                {/* {{-- left side --}} */}
-                <div id="left-messages" class="col-md-6 py-1">
-                    <div id="receiver-messages" class="d-flex flex-column align-items-md-start gap-2">
-                        
-                    </div>
-                </div>
-
-                {/* {{-- right side --}} */}
-                <div id="right-messages" class="col-md-6 py-1">
-                    <div id="sender-messages" class="d-flex flex-column align-items-end justify-content-end gap-2">
-
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="w-100 p-2">
