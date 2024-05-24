@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Chat from '@/Components/Chat'
 import axios from 'axios';
@@ -7,35 +7,34 @@ axios.defaults.withCredentials = true;
 
 function Index({chats, auth}) {
 
+    const retreiveChatData = async (chatId) => {
+        try {
+            let { data } = await axios.get(`http://localhost:8000/messages/${chatId}`)
+            
+            if(data){
+                let { messages, receiverUserId, chatId, receiverUser, user } = data;
 
-const retreiveChatData = async (chatId) => {
-    try {
-        let { data } = await axios.get(`http://localhost:8000/messages/${chatId}`)
-        
-        if(data){
-            let { messages, receiverUserId, chatId, receiverUser, user } = data;
-
-            setReceiverUser(receiverUser);
-            setReceiverUserId(receiverUserId);
-            setMessages(messages);
-            setChatId(chatId);
-            setAuthUser(user);
+                setReceiverUser(receiverUser);
+                setReceiverUserId(receiverUserId);
+                setMessages(messages);
+                setChatId(chatId);
+                setAuthUser(user);
+            }
+            
+        } catch (error) {
+            console.log(error);
         }
+    }       
         
-    } catch (error) {
-        console.log(error);
-    }
-}       
-    
-const [receiverUser, setReceiverUser] = useState(undefined)
-const [receiverUserId, setReceiverUserId] = useState(undefined)
-const [messages, setMessages] = useState(undefined)
-const [chatId, setChatId] = useState(undefined)
-const [authUser, setAuthUser] = useState(undefined)
+    const [receiverUser, setReceiverUser] = useState(undefined)
+    const [receiverUserId, setReceiverUserId] = useState(undefined)
+    const [messages, setMessages] = useState(undefined)
+    const [chatId, setChatId] = useState(undefined)
+    const [authUser, setAuthUser] = useState(undefined)
 
   return (
     <AuthenticatedLayout user={auth.user}>
-        <div class="d-flex">
+        <div class="d-flex h-screen">
             <div id="inbox-chats" class="col-4 d-flex flex-column h-screen border-r-[2px] border-[#202020]" >
                 <div class="p-4">
                     <h2 className='text-white'>{ auth.user.username }</h2>
@@ -66,20 +65,17 @@ const [authUser, setAuthUser] = useState(undefined)
             {/* if I click a chat I have to render a component next to the chats where I can chat to the receiver user
             Load a component, by clicking a chat  */}
             {messages !== undefined && receiverUserId !== undefined && chatId !== undefined ? (
-                /* <x-chat :chatId='$chat_id' :messages='$messages' :receiverUserId='$receiver_user_id' :receiverUser='$receiverUser' /> */
-                <div>
-                    <Chat id={chatId} messages={messages} userId={receiverUserId} user={receiverUser} authUser={authUser} />
-                    {/* <h1>hola</h1> */}
-                </div>
+                <Chat id={chatId} messages={messages} userId={receiverUserId} user={receiverUser} authUser={authUser} />
             )
                :
-               (<div class="col-8 d-flex flex-column align-items-center ">
+            (
+            <div class="col-8 d-flex flex-column align-items-center ">
                 <div class="d-flex flex-column align-items-center py-4">
                     <h4 className='text-white'>Your messages</h4>
                     <p className='text-white'>Send a message to start a chat.</p>
                     <button class="btn btn-primary">Send message</button>
                 </div>
-               </div>)}
+            </div>)}
         </div>
     </AuthenticatedLayout>
   )
