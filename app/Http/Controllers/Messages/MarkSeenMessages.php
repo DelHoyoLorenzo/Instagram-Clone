@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Messages;
 
+use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -20,15 +21,13 @@ class MarkSeenMessages extends Controller
 
         $user_id = (int) $request->userId;
 
-        /* $authUserId = Auth::id();
-        $user = auth()->user(); */
-        /* $authUserId = $user->id; */
-
         //seach for the messages from that chat, and also those which have not been seen
         $messages = Message::where('chat_id', $chat_id)
         ->where('seen', false)
         ->where('sender_user_id', '!=', $user_id)
         ->update(['seen' => true, 'seen_at' => now()]);
+
+        /* event(new MessageNotification()) */
 
         return response()->json(['message'=>'Messages successfully updated']);
     }

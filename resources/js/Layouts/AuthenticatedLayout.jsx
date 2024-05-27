@@ -5,13 +5,19 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import SideBar from '@/shared/SideBar';
+import { NotificationProvider } from '@/Contexts/NotificationContext';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
         <div className="min-h-screen bg-black dark:bg-gray-900 flex">
-            <SideBar user={user}/>
+
+            {/* <NotificationProvider >
+            </NotificationProvider> */}
+                <SideBar user={user}/>
+                <main className='w-full'>{children}</main>
+            
             {/* <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -120,8 +126,6 @@ export default function Authenticated({ user, header, children }) {
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )} */}
-
-            <main className='w-full'>{children}</main>
         </div>
     );
 }

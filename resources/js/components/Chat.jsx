@@ -23,7 +23,7 @@ function Chat({id, messages, userId, user, authUser}) {
             let { data } = await axios.get(`http://localhost:8000/api/seen/${chatId}`, info);
 
             if(data){
-                console.log(data)
+                /* console.log(data) */
             }
         
         } catch (error) {
