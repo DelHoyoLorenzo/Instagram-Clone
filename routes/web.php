@@ -44,4 +44,8 @@ Route::get('/chats/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 
 
 Route::get('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'show'])->middleware('auth');
 
+//----------------notifications-----------------------------------
+
+Route::get('/checkChatsNotifications', [App\Http\Controllers\Notifications\MessageNotificationController::class, 'index']);
+
 require __DIR__.'/auth.php';

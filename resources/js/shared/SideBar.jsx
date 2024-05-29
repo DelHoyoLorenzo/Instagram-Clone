@@ -6,38 +6,8 @@ import { Link } from '@inertiajs/react'
 function SideBar({user}) {
     // dont I have to check if there any message unseen so I can notificate that there are several chats unopened?
     let { notifications } = useNotifications();
-    const [sideBarNotifications, setSideBarNotifications] = useState(0);/* 
 
-    console.log('user-id', user.id)
-    console.log('notifications', notifications) */
-    
-    /* useEffect(()=>{
-        let chatsUnseen = [];
-
-        notifications.map((notification)=>{
-            console.log(typeof notification)
-            if(typeof notification === 'number'){
-                if(chatsUnseen){
-                    chatsUnseen = chatsUnseen.filter((chatId) => chatId !== notification )
-                }
-
-            }
-
-            let isChatCounted = chatsUnseen.some( (chatId) => chatId === notification.chat_id);
-
-            console.log(isChatCounted);
-            
-            if(user.id !== notification.sender_user_id && !isChatCounted){
-                console.log('entre')
-                chatsUnseen.push(notification.id);
-            }
-        })
-
-        setSideBarNotifications(chatsUnseen.length)
-
-    }, [notifications]) */
-    
-  /*   console.log('estado local', sideBarNotifications) */
+    console.log(notifications)
   return (
     <nav class="navbar navbar-expand-md navbar-light shadow-sm d-flex flex-column w-44 h-screen border-r-[2px] border-[#202020] w-[16%]" >
         <div class="d-flex flex-column justify-content-around w-75 h-100">
@@ -47,7 +17,7 @@ function SideBar({user}) {
             <div id='icons' class="d-flex flex-column gap-8 pl-0">
                 <Link href="/" class="text-decoration-none">
                     <div class="d-flex gap-3 align-items-center">
-                        <svg aria-label="Home" fill="currentColor" height="28" role="img" viewBox="0 0 24 24" width="28"><title>Home</title><path d="M9.005 16.545a2.997 2.997 0 0 1 2.997-2.997A2.997 2.997 0 0 1 15 16.545V22h7V11.543L12 2 2 11.543V22h7.005Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        <svg aria-label="Home" fill="currentColor" height="28" role="img" viewBox="0 0 24 24" width="28"><title>Home</title><path d="M9.005 16.545a2.997 2.997 0 0 1 2.997-2.997A2.997 2.997 0 0 1 15 16.545V22h7V11.543L12 2 2 11.543V22h7.005Z" fill="none" stroke="currentColor" strokeLinejoin="round" stroke-width="2"></path></svg>
                         <p class="m-0">Home</p>
                     </div>
                 </Link>
@@ -68,7 +38,7 @@ function SideBar({user}) {
                     <div class="d-flex gap-3 align-items-center">
                         <svg aria-label="Messenger" fill="currentColor" height="28" role="img" viewBox="0 0 24 24" width="28"><title>Messenger</title><path d="M12.003 2.001a9.705 9.705 0 1 1 0 19.4 10.876 10.876 0 0 1-2.895-.384.798.798 0 0 0-.533.04l-1.984.876a.801.801 0 0 1-1.123-.708l-.054-1.78a.806.806 0 0 0-.27-.569 9.49 9.49 0 0 1-3.14-7.175 9.65 9.65 0 0 1 10-9.7Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="1.739"></path><path d="M17.79 10.132a.659.659 0 0 0-.962-.873l-2.556 2.05a.63.63 0 0 1-.758.002L11.06 9.47a1.576 1.576 0 0 0-2.277.42l-2.567 3.98a.659.659 0 0 0 .961.875l2.556-2.049a.63.63 0 0 1 .759-.002l2.452 1.84a1.576 1.576 0 0 0 2.278-.42Z" fill-rule="evenodd"></path></svg>
                         <p class="m-0">Messages</p>
-                        { sideBarNotifications ? (<p id="notification" className='bg-red-800 rounded-2xl p-1'> {sideBarNotifications} </p>) : null }
+                        { notifications.length > 0  ? (<p id="notification" className='bg-red-800 rounded-2xl p-1'> {notifications.length} </p>) : null }
                     </div>
                 </Link>
                 <Link href="" class="text-decoration-none">

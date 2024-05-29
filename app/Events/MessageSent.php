@@ -20,6 +20,7 @@ class MessageSent implements ShouldBroadcast
     public function __construct($message)
     {
         $this->message = $message;
+        /* event(new MessageNotification($message->chat_id, $message->receiver_user_id)); */
     }
 
     /**

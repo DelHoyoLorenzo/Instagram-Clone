@@ -13,6 +13,7 @@ class MessageEventController extends Controller
     public function create($chat_id, Request $request)
     {
         $chat_id = (int) $chat_id;
+        $user_id = (int) $request->json('receiver_user_id');
         
         $message = Message::create([
             'content' => $request->json('content'),
@@ -20,28 +21,12 @@ class MessageEventController extends Controller
             'receiver_user_id' => (int) $request->json('receiver_user_id'), 
             'chat_id' => $chat_id,
         ]);
-        
-        /* $messages = Message::where('chat_id', $chat_id)->get(); */
 
-        /* $chats = auth()->user()->chats;
-        $currentChat = $chats->firstWhere('id', $chat_id);
-
-        $usersInvolved = $currentChat->users->toArray();
-        
-        $receivers = array_filter($usersInvolved, function ($user) {
-            return $user['id'] !== auth()->user()->id;
-        });
-
-        $firstReceiver = reset($receivers);
-        $receiver_id = $firstReceiver['id']; */
-
-        event(new MessageSent($message));
         /* MessageSent::dispatch($message); !this line does not work */
+        event(new MessageSent($message));
 
-        // I have to send a notification in any case, does not matter if the user is chatting
-        $sender_id = (int) $request->json('sender_user_id');
-        
-        event(new MessageNotification($chat_id, $sender_id));
+        // I have to send a notification in any case, does not matter if the user is chatting or not
+        /* event(new MessageNotification($chat_id, $user_id)); */
 
         return response()->json(['message'=> $message]);
     }
