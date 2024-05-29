@@ -39,7 +39,9 @@ class MessageEventController extends Controller
         /* MessageSent::dispatch($message); !this line does not work */
 
         // I have to send a notification in any case, does not matter if the user is chatting
-        event(new MessageNotification($message));
+        $sender_id = (int) $request->json('sender_user_id');
+        
+        event(new MessageNotification($chat_id, $sender_id));
 
         return response()->json(['message'=> $message]);
     }

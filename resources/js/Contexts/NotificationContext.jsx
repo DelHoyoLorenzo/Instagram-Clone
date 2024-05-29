@@ -14,7 +14,9 @@ export const NotificationProvider = ({ children }) => { // fill the context with
     useEffect(() => {
         // if a new message is created, then I notify the logged user
         window.Echo.channel('notification').listen('MessageNotification', (e) => {
-            setNotifications((prev) => [...prev, e.notificationMessage]);
+          console.log(e.notificationMessage)
+          
+          setNotifications(e.notificationMessage);
         });
 
         // I should check if there are any messages unseen
@@ -23,7 +25,6 @@ export const NotificationProvider = ({ children }) => { // fill the context with
 
     }, []);
     
-    console.log(notifications)
 
     return (
       <NotificationContext.Provider value={{notifications}}>

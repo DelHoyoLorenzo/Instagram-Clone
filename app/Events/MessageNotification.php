@@ -14,11 +14,14 @@ class MessageNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $chat_id;
+    public $user_id;
+    public $unseen_chats;
 
-    public function __construct($message)
+    public function __construct($chat_id, $user_id)
     {
-        $this->message = $message;
+        $this->chat_id = $chat_id;
+        $this->user_id = $user_id;
     }
 
     /**
@@ -36,7 +39,7 @@ class MessageNotification implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'notificationMessage' => $this->message,
+            'notificationMessage' => $this->unseen_chats,
         ];
     }
 }

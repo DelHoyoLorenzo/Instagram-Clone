@@ -52,7 +52,7 @@ function Index({chats, auth}) {
                         let userAuth = auth.user;
                         let receiverUser = chat.users.find((user) => user.id !== userAuth.id);
 
-                        let hasUnseenMessages = notifications.some( message => message.chat_id === chat.id)
+                        /* let hasUnseenMessages = notifications.some( message => message.chat_id === chat.id) */
 
                         {/* TODO: check if the chat is filled */}
 
@@ -66,7 +66,7 @@ function Index({chats, auth}) {
                                         </div>
                                         <p className="m-0 text-white">{receiverUser.username}</p>
                                     </div>
-                                    { hasUnseenMessages ? <span className='w-1 h-1 rounded-full bg-[#0095F6]'></span> : null }
+                                    {/* { hasUnseenMessages ? <span className='w-1 h-1 rounded-full bg-[#0095F6]'></span> : null } */}
                                     
                                 {/* </a> */}
                             </div>
@@ -75,8 +75,6 @@ function Index({chats, auth}) {
                 </div>
             </div>
             
-            {/* if I click a chat I have to render a component next to the chats where I can chat to the receiver user
-            Load a component, by clicking a chat  */}
             {messages !== undefined && receiverUserId !== undefined && chatId !== undefined ? (
                 <Chat id={chatId} messages={messages} userId={receiverUserId} user={receiverUser} authUser={authUser} />
             )

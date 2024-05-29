@@ -12,7 +12,7 @@ function Index({ posts, user, profile, auth }) {
                 <div className="col-9">
                 {posts.map((post, index) => (
                     <div key={post.id}>
-                        <div className="col-6 offset-2 py-3 d-flex gap-3 text-primary align-items-center">
+                        <div className="col-6 offset-2 py-3 d-flex gap-3 text-white align-items-center">
                             <div className="w-25">
                                 <a className="text-decoration-none" href={`/profile/${post.user.id}`}>
                                     <img className="w-100 p-0 m-0 rounded-circle" /* src="{ post.user.profile.profileImage }" */ alt="user-profile-image" />
@@ -46,13 +46,13 @@ function Index({ posts, user, profile, auth }) {
                                         <span>{ post.user.username }</span>
                                     </a>
                                 </div>
-                                {<p className="p-0 m-0 font-weight-bold text-white">{ post.caption }</p>}
+                                <p className="p-0 m-0 font-weight-bold text-white">{ post.caption }</p>
                             </div>
                             <a className="text-decoration-none m-0 p-0" href={`/p/${post.id}`}>
                                 {/* <p className="p-0 my-2 text-comment" >View all <span>{{ $post->comments->count() || '' }}</span> comments...</p> */}
                             </a>
                         </div>
-                        <hr className="col-7 text-primary offset-2 my-0" />
+                        <hr className="col-7 offset-2 my-0" />
                     
                 
 

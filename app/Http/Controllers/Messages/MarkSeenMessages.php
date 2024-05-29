@@ -27,7 +27,7 @@ class MarkSeenMessages extends Controller
         ->where('sender_user_id', '!=', $user_id)
         ->update(['seen' => true, 'seen_at' => now()]);
 
-        /* event(new MessageNotification()) */
+        /* event(new MessageNotification($chat_id, $user_id)); */
 
         return response()->json(['message'=>'Messages successfully updated']);
     }

@@ -6,30 +6,38 @@ import { Link } from '@inertiajs/react'
 function SideBar({user}) {
     // dont I have to check if there any message unseen so I can notificate that there are several chats unopened?
     let { notifications } = useNotifications();
-    const [sideBarNotifications, setSideBarNotifications] = useState(0);
+    const [sideBarNotifications, setSideBarNotifications] = useState(0);/* 
 
     console.log('user-id', user.id)
-    console.log('notifications', notifications)
+    console.log('notifications', notifications) */
     
-    useEffect(()=>{
+    /* useEffect(()=>{
         let chatsUnseen = [];
 
         notifications.map((notification)=>{
-            let isChatCounted = chatsUnseen.some( (chat) => chat.id === notification.chat_id);
+            console.log(typeof notification)
+            if(typeof notification === 'number'){
+                if(chatsUnseen){
+                    chatsUnseen = chatsUnseen.filter((chatId) => chatId !== notification )
+                }
+
+            }
+
+            let isChatCounted = chatsUnseen.some( (chatId) => chatId === notification.chat_id);
 
             console.log(isChatCounted);
             
             if(user.id !== notification.sender_user_id && !isChatCounted){
                 console.log('entre')
-                chatsUnseen.push(notification);
+                chatsUnseen.push(notification.id);
             }
         })
 
         setSideBarNotifications(chatsUnseen.length)
 
-    }, [notifications])
+    }, [notifications]) */
     
-    console.log('estado local', sideBarNotifications)
+  /*   console.log('estado local', sideBarNotifications) */
   return (
     <nav class="navbar navbar-expand-md navbar-light shadow-sm d-flex flex-column w-44 h-screen border-r-[2px] border-[#202020] w-[16%]" >
         <div class="d-flex flex-column justify-content-around w-75 h-100">
