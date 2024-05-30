@@ -26,8 +26,10 @@ class MarkSeenMessages extends Controller
         ->where('seen', false)
         ->where('sender_user_id', '!=', $user_id)
         ->update(['seen' => true, 'seen_at' => now()]);
+        
+        broadcast(new MessageNotification($user_id));
+        // esto setea los mensajes del chat en el que estoy en seen, pero necesito sacarme MIS notificaciones, no necesito resetear las notificaciones del otro usuario
 
-        /* event(new MessageNotification($chat_id, $user_id)); */
 
         return response()->json(['message'=>'Messages successfully updated']);
     }

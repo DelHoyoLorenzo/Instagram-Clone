@@ -19,8 +19,16 @@ class MessageSent implements ShouldBroadcast
 
     public function __construct($message)
     {
+        /* [
+            "content" => "asd"
+            "sender_user_id" => 1
+            "receiver_user_id" => 2
+            "chat_id" => 1
+            "updated_at" => "2024-05-30 18:16:42"
+            "created_at" => "2024-05-30 18:16:42"
+            "id" => 41
+          ] */
         $this->message = $message;
-        /* event(new MessageNotification($message->chat_id, $message->receiver_user_id)); */
     }
 
     /**
@@ -28,10 +36,11 @@ class MessageSent implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
         return [
-            new Channel('chat'),
+            new PrivateChannel('chat.' . $this->message->receiver_user_id . '.' . $this->message->sender_user_id),
+            new PrivateChannel('chat.' . $this->message->sender_user_id . '.' . $this->message->receiver_user_id),
         ];
     }
 

@@ -16,19 +16,19 @@ class MessageNotification implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $chatId;
-    public $userId;
+    public $receiver_id;
     public $unseenChats = [];
 
-    public function __construct($userId)
+    public function __construct($receiver_user_id)
     {
-        $this->userId = $userId;
-        $chats = [];
+        //dd($userId); //1 si mando un mensaje desde el usuario de luna
+        $this->receiver_id = $receiver_user_id;
 
         // trae todos los mensajes los cuales yo no soy el sender y ademas que no haya visto la otra persona
         // recorremos el arreglo de mensajes NO vistos por la/s otra/s personas
         // almacenamos en un arreglo cada vez que veo un chat_id distinto
 
-        $unreadMessages = Message::where('receiver_user_id', $this->userId)
+        $unreadMessages = Message::where('receiver_user_id', $this->receiver_id)
             ->where('seen', false)
             ->get();
 
@@ -57,9 +57,7 @@ class MessageNotification implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [
-            new Channel('notification'),
-        ];
+        return new PrivateChannel('notification.'.$this->receiver_id);
     }
 
     public function broadcastWith()

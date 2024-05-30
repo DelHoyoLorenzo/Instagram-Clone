@@ -34,11 +34,15 @@ function Chat({id, messages, userId, user, authUser}) {
     useEffect(()=>{
         const messagesDiv = document.getElementById('messages');
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        
+
         // swap seen attribute to true
         setSeenMessages();
+        
+        /*  window.Echo.channel('chat').listen('MessageSent', (e) => { */
 
-        window.Echo.channel('chat').listen('MessageSent', (e) => {
+        window.Echo.private(`chat.${authUser.id}.${receiverUserId}`) .listen('MessageSent', (e) => {
+            console.log(authUser.id)
+            console.log(e)
             setNewMessages(prevMessages => [...prevMessages, e.eventMessage]);
             if(e.eventMessage.sender_user_id !== authUser.id){
                 setSeenMessages();
@@ -47,9 +51,9 @@ function Chat({id, messages, userId, user, authUser}) {
         });
         
         
-        return () => {
-            window.Echo.leave('chat');
-        };
+        /* return () => {
+            Echo.leave(`chat.${authUser.id}`);
+        }; */
     }, [])
     
     function handleChange(e) {

@@ -13,7 +13,7 @@ class MessageEventController extends Controller
     public function create($chat_id, Request $request)
     {
         $chat_id = (int) $chat_id;
-        $user_id = (int) $request->json('receiver_user_id');
+        $receiver_user_id = (int) $request->json('receiver_user_id');
         
         $message = Message::create([
             'content' => $request->json('content'),
@@ -26,7 +26,8 @@ class MessageEventController extends Controller
         event(new MessageSent($message));
 
         // I have to send a notification in any case, does not matter if the user is chatting or not
-        /* event(new MessageNotification($chat_id, $user_id)); */
+        
+        broadcast(new MessageNotification($receiver_user_id))->toOthers();
 
         return response()->json(['message'=> $message]);
     }

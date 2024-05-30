@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageNotificationController extends Controller
 { 
-    // this is for the user to check their notifications
+    // this is for the user to check their notifications on every page reload (F5), no need of broadcasting in this case
     public function index()
     {
         $authUser = Auth::user();
@@ -26,6 +26,5 @@ class MessageNotificationController extends Controller
             }
         }
         return response()->json($unseenChats);
-        /* event(new EventsMessageNotification($user_id)); */
     }
 }

@@ -11,11 +11,14 @@ Hook Personalizado: useNotifications encapsula useContext(NotificationContext) p
 Ventajas: Encapsulamiento, reutilización y simplicidad en los componentes consumidores. 
 */
 
-export const NotificationProvider = ({ children }) => { // fill the context with this provider, I am providing of info to the context
+export const NotificationProvider = ({ children, user }) => { // fill the context with this provider, I am providing of info to the context
+
     const [notifications, setNotifications] = useState([]);
     
     useEffect(() => {
-        window.Echo.channel('notification').listen('MessageNotification', (e) => {
+        window.Echo.private('notification.' + user.id ).listen('MessageNotification', (e) => {
+          console.log(user.id)
+          console.log(e)
           if(e){
             setNotifications(e.unseenChats);
           }

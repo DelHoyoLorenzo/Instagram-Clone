@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true;
 
 function Index({chats, auth}) {
     
-    let { notifications } = useNotifications();
+    /* let { notifications } = useNotifications(); */
     
     useEffect(()=>{
     
