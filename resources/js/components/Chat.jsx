@@ -1,7 +1,9 @@
+import { useNotifications } from '@/Contexts/NotificationContext';
 import Echo from 'laravel-echo'
 import React, { useEffect, useState } from 'react'
 
 function Chat({id, messages, userId, user, authUser}) {
+    const { dispatch } = useNotifications();
 
     const [chatMessages, setChatMessages] = useState(messages);
     const [newMessages, setNewMessages] = useState([])
@@ -23,7 +25,8 @@ function Chat({id, messages, userId, user, authUser}) {
             let { data } = await axios.get(`http://localhost:8000/api/seen/${chatId}`, info);
 
             if(data){
-                /* console.log(data) */
+                console.log('se setearon en seen los mensajes, despacho la action')
+                dispatch({ type: 'FETCH_NOTIFICATIONS' });
             }
         
         } catch (error) {
@@ -34,7 +37,7 @@ function Chat({id, messages, userId, user, authUser}) {
     useEffect(()=>{
         const messagesDiv = document.getElementById('messages');
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
+        console.log('hola soy ' + authUser.username)
         // swap seen attribute to true
         setSeenMessages();
         

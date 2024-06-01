@@ -10,9 +10,9 @@ function Index({chats, auth}) {
     
     /* let { notifications } = useNotifications(); */
     
-    useEffect(()=>{
-    
-    }, [])
+    /* useEffect(()=>{
+
+    }, []) */
 
     const retreiveChatData = async (chatId) => {
         try {

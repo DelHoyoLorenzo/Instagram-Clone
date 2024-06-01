@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 //----------------chats----------------------------------------
 
 Route::get('/inbox', [App\Http\Controllers\Chats\ChatsController::class, 'show'])->middleware("auth");
-Route::get('/chats/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 'create'])->middleware("auth");
+/* Route::get('/chats/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 'create'])->middleware("auth"); */
 
 //----------------messages----------------------------------------
 

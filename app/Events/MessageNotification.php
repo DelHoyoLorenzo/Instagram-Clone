@@ -21,33 +21,32 @@ class MessageNotification implements ShouldBroadcast
 
     public function __construct($receiver_user_id)
     {
-        //dd($userId); //1 si mando un mensaje desde el usuario de luna
+        //dd($receiver_user_id); //1 si mando un mensaje desde el usuario de luna
         $this->receiver_id = $receiver_user_id;
 
         // trae todos los mensajes los cuales yo no soy el sender y ademas que no haya visto la otra persona
         // recorremos el arreglo de mensajes NO vistos por la/s otra/s personas
         // almacenamos en un arreglo cada vez que veo un chat_id distinto
-
         $unreadMessages = Message::where('receiver_user_id', $this->receiver_id)
             ->where('seen', false)
             ->get();
 
+        // looking for chat ids from unread messages
         foreach ($unreadMessages as $message) {
             if (!in_array($message->chat_id, $this->unseenChats)) {
                 $this->unseenChats[] = $message->chat_id;
             }
         }
 
+        /* else if($this->clear_chat === true){
+            $this->unseenChats = array_filter($this->unseenChats, function($chat_id) use ($message){
+                return $chat_id !== $message->chat_id;
+            });
+
+            $this->unseenChats = array_values($this->unseenChats);
+        } */
+
         // no tengo que pensar en si vuelven a entrar a traves de otro flujo a este evento, entre por donde entre devuelvo lo mismo, las notificaciones completas
-
-        /* if($last_receiver_message && !$last_receiver_message->seen){
-            $aux = ['chatId'=>$this->chatId, 'senderUserId'=>$last_receiver_message->sender_user_id];
-            array_push($chats, $aux);
-        }else{
-            array_filter($chats, function($chat){ return $chat->chatId !== $this->chatId; });
-        }
-
-        $this->unseenChats = $chats; */
     }
 
     /**
