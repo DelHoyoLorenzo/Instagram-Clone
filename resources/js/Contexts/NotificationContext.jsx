@@ -1,6 +1,9 @@
 import { createContext, useEffect, useState, useContext, useReducer } from "react";
 axios.defaults.withCredentials = true;
 
+/* const URL = process.env.FRONT_URL;
+console.log(URL) */
+
 export const NotificationContext = createContext()
 
 export const useNotifications = () => {
@@ -38,9 +41,10 @@ export const NotificationProvider = ({ children, user }) => { // fill the contex
     
     useEffect(() => {
 
+        //when any view is loaded for the first time
+        fetchData();
+
         window.Echo.private('notification.' + user.id ).listen('MessageNotification', (e) => {
-          console.log(user.id)
-          console.log(e);
           if(e){
             setNotifications(e.unseenChats);
           }

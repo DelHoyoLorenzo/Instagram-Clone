@@ -2,22 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\User; // Import the User model with the correct namespace
 use Illuminate\Http\Request;
-
+use Inertia\Inertia;
 
 class ProfilesController extends Controller
 {
-    public function index(User $user)
+    public function index($request)
     {
-        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
-        $profile = auth()->user()->profile;
+        $user_id = (int) $request;
+        $auth_user = auth()->user();
+        /* $following = auth()->user()->following; // does not work with following()
 
-            return view('profiles.index', [ //data we send to the front, we render what is within this directory route in our project
-                'user' => $user,
-                'follows' => $follows,
-                'profile' => $profile,
-            ]);
+        */
+        
+        $user_requested = User::where('id', $user_id)->with(['profile', 'posts', 'following'])->first();
+        
+        /* $follows = $user_requested->following->contains($auth_user->id); */
+
+        $followers = Profile::where('user_id', $user_id)->with('followers')->get();
+
+        return Inertia::render('Profile/Index', [
+            'user' => $user_requested,
+            'followers' => $followers,
+            'profile' => $user_requested->profile,
+            'following' =>$user_requested->following,
+        ]);
         
         //we can save the counters in cache for 30 seconds and avoid reaching the database constantly
         //

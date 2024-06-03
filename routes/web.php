@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfilesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,7 +22,7 @@ Route::get('/dashboard', function () {
 //----------------profile----------------------------------------
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/{user}', [ProfilesController::class, 'index'])->name('profile.index');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -46,6 +47,15 @@ Route::get('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController
 
 //----------------notifications-----------------------------------
 
-Route::get('/checkChatsNotifications', [App\Http\Controllers\Notifications\MessageNotificationController::class, 'index']);
+Route::get('/checkChatsNotifications', [App\Http\Controllers\Notifications\MessageNotificationController::class, 'index'])->middleware('auth');
 
+//----------------likes-------------------------------------------
+
+Route::post('/like/{post}', [App\Http\Controllers\LikesController::class, 'store'])->middleware('auth');
+
+//----------------followers---------------------------------------
+
+Route::post('/follow/{user}', [App\Http\Controllers\FollowsController::class, 'store'])->middleware('auth');
+
+//----------------------------------------------------------------
 require __DIR__.'/auth.php';

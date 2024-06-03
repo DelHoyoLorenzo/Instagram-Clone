@@ -4,10 +4,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from '@inertiajs/react'
 
 function SideBar({user}) {
-    // dont I have to check if there any message unseen so I can notificate that there are several chats unopened?
+    
     let { notifications } = useNotifications();
 
-    console.log(notifications)
   return (
     <nav class="navbar navbar-expand-md navbar-light shadow-sm d-flex flex-column w-44 h-screen border-r-[2px] border-[#202020] w-[16%]" >
         <div class="d-flex flex-column justify-content-around w-75 h-100">

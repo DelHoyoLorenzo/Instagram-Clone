@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
 
 function FollowButton({user_id, isFollowed}) {
 
@@ -7,7 +6,7 @@ function FollowButton({user_id, isFollowed}) {
     
     const followUser = (user_id) =>
     {
-        axios.post(`/follow/${user_id}`)
+        axios.post(`http://localhost:8000/follow/${user_id}`)
         .then(response => {
             setStatus(!status);
         })
@@ -20,22 +19,9 @@ function FollowButton({user_id, isFollowed}) {
     
     return (
         <div>
-            { status ? <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Unfollow </button> : <button class="btn btn-primary mx-2" onClick={()=>followUser(user_id)}> Follow </button>}
+            { status ? <button class="bg-[#1877F2] p-2 rounded-md mx-2 text-white" onClick={()=>followUser(user_id)}> Unfollow </button> : <button class="bg-[#1877F2] p-2 rounded-md mx-2 text-white" onClick={()=>followUser(user_id)}> Follow </button>}
         </div>
     );
 }
 
 export default FollowButton;
-
-const followButtonElement = document.getElementById('FollowButton');
-
-if (followButtonElement) {
-    const Index = ReactDOM.createRoot(document.getElementById("FollowButton"));
-    const userId = followButtonElement.getAttribute('user_id');
-    const isFollowed = followButtonElement.getAttribute('isFollowed');
-    Index.render(
-        <React.StrictMode>
-            <FollowButton user_id={userId} isFollowed={isFollowed}/>
-        </React.StrictMode>
-    )
-}

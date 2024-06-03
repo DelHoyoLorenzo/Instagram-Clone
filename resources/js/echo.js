@@ -1,3 +1,4 @@
+/* REVERB */
 /* import Echo from 'laravel-echo';
 
 import Pusher from 'pusher-js';
@@ -14,6 +15,7 @@ window.Echo = new Echo({
     encrypted: true
 }); */
 
+/* PUSHER */
 import Echo from 'laravel-echo';
  
 import Pusher from 'pusher-js';

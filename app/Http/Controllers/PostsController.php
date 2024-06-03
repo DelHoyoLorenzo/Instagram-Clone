@@ -17,11 +17,9 @@ class PostsController extends Controller
         $profile = auth()->user()->profile;
         $user = auth()->user();
         
-        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->get();
+        $posts = Post::whereIn('user_id', $users)->with('user')->with('likes')->latest()->get();
         //or use orderBy('created_at','DESC') to order like that
-        //with('user')-> says to laravel just do one query instead of doing one query per iteration, look telescope
-        
-        /* return view('posts.index', compact('posts', 'profile', 'user')); */
+        //with('user')-> says to laravel just do one query instead of doing one query per iteration, look telescope ???
 
         return Inertia::render('Feed/Index', [
             'posts'=>$posts,
@@ -62,6 +60,6 @@ class PostsController extends Controller
 
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        return Inertia::render('Posts/Post', ['post' => $post]);
     }
 }
