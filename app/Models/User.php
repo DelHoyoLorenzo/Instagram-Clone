@@ -52,11 +52,12 @@ class User extends Authenticatable
     {
         parent::boot(); 
 
+        //after creating an user (register)
         static::created(function ($user) {
             $user->profile()->create([
-                'title'=>$user->username,
+                'title'=> $user->username,
+                'image'=> '/profile/ewlzIIvKnqTYhbXp31ipzqoApPG6u3gSUE3ulOXO.png',
             ]);
-        //after creating an user (register)
         
         //mailtrap
             Mail::to($user->email)->send(new NewUserWelcomeMail());

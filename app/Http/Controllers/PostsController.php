@@ -60,6 +60,15 @@ class PostsController extends Controller
 
     public function show(Post $post)
     {
-        return Inertia::render('Posts/Post', ['post' => $post]);
+        // attaching the relation user to the post
+        /* $post->load('user', 'comments.user', 'likes'); */
+        $retreived_post = Post::with(['comments.user.profile', 'likes', 'user.profile'])->find($post->id);
+        // the line above retreives all posts relations and also user relation for comments, it doesnt work with load
+
+        $authUser = auth()->user();
+        
+        $isFollowed = $authUser->following->contains('user_id', $post->user_id);
+
+        return Inertia::render('Posts/Post', [ 'post' => $retreived_post, 'isFollowed' => $isFollowed ]);
     }
 }

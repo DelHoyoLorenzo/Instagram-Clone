@@ -25,8 +25,6 @@ function Index({ user, followers, following, profile, auth }) {
                     <div class="d-flex justify-content-between align-items-baseline">
                         <div class="d-flex align-items-center my-4">
                             <h4 className='text-white'>{user.username}</h4>
-                            
-                            
                             {
                                 (user.id !== auth.user.id) ?
                                     <FollowButton user_id={ user.id } isFollowed={ isFollowed } />
@@ -38,12 +36,18 @@ function Index({ user, followers, following, profile, auth }) {
                                 <button class="mx-2 text-white bg-[#1877F2] p-2 rounded-md">Message</button>
                             </a>
                             {/* #262626 bg button color -- */}
-                            {/* @can ('update', user.profile)
-                                <a href="/profile/{{ $user->id }}/edit"><button class="mx-2 btn btn-primary">Edit Profile</button></a>
-                            @endcan
-                            @can ('update', $user.profile)
-                            <a href="/p/create"><button class="mx-2 btn btn-primary">New Post</button></a>
-                            @endcan */}
+                            {
+                            (user.id === auth.user.id) ?
+                            (<div className='flex '>
+                                <a href={`/profile/${ user.id }/edit`}>
+                                    <button class="mx-2 bg-[#1877F2] p-2 rounded-md">Edit Profile</button>
+                                </a>
+                                <a href="/p/create">
+                                    <button class="mx-2 bg-[#1877F2] p-2 rounded-md">New Post</button>
+                                </a>
+                            </div>
+                            ) : (null)
+                            }
                         </div>
                     </div>
         
