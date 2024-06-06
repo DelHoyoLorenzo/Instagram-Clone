@@ -13,9 +13,6 @@ function Index({ user, followers, following, profile, auth }) {
             setIsFollowed(true)
         }
     })
-    
-    
-    console.log(auth.user.profile);
 
   return (
     <AuthenticatedLayout user={auth.user}>

@@ -14,11 +14,12 @@ class PostsController extends Controller
     public function index(User $user) //render all posts in '/'
     {
         $users = auth()->user()->following()->pluck('profiles.user_id'); //colection of users that we follow
+        // following method does not work without (), I dont know why
         
-        $profile = auth()->user()->profile;
-        $user = auth()->user();
+        $profile = auth()->user()->profile; // this is for passing the auth profile to the auth prop in /profile/id, so I can pass it to the Auth layout, therefore to the sidebar
         
         $posts = Post::whereIn('user_id', $users)->with(['user.profile', 'likes', 'comments'])->latest()->get();
+
         //or use orderBy('created_at','DESC') to order like that
         //with('user')-> says to laravel just do one query instead of doing one query per iteration, look telescope ???
 
@@ -61,14 +62,12 @@ class PostsController extends Controller
 
     public function show(Post $post)
     {
-        // attaching the relation user to the post
         /* $post->load('user', 'comments.user', 'likes'); */
         // the line above retreives all posts relations and also user relation for comments, it doesnt work with load
         $retreived_post = Post::with(['comments.user.profile', 'likes', 'user.profile'])->find($post->id);
         $retreived_coments = Comment::where('post_id', $post->id)->with('user.profile')->get(); 
 
         $authUser = auth()->user();
-        
         $isFollowed = $authUser->following->contains('user_id', $post->user_id);
 
         return Inertia::render('Posts/Post', [ 'post' => $retreived_post, 'isFollowed' => $isFollowed, 'comments' => $retreived_coments ]);

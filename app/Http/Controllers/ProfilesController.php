@@ -9,10 +9,10 @@ use Inertia\Inertia;
 
 class ProfilesController extends Controller
 {
-    public function index($request)
+    public function index(User $user)
     {
-        $user_id = (int) $request;
-        $auth_user = auth()->user();
+        $user_id = $user->id;
+        $auth_profile = auth()->user()->profile;
         /* $following = auth()->user()->following; // does not work with following()*/
         
         $user_requested = User::where('id', $user_id)->with(['profile', 'posts', 'following'])->first();
@@ -23,8 +23,9 @@ class ProfilesController extends Controller
 
         return Inertia::render('Profile/Index', [
             'user' => $user_requested,
-            'followers' => $followers,
             'profile' => $user_requested->profile,
+            'authProfile'=> $auth_profile,
+            'followers' => $followers,
             'following' =>$user_requested->following,
         ]);
         
@@ -52,7 +53,7 @@ class ProfilesController extends Controller
 
         if (request('image')) { //if the request has an image
             $imagePath = request('image')->store('profile','public');
-            
+
             $imageArray = ['image'=> $imagePath];
         }
 

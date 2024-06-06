@@ -5,7 +5,6 @@ import LikeButton from '@/Components/LikeButton';
 import { Link } from '@inertiajs/react';
 
 function Post({ post, isFollowed, auth }) {
-    console.log(post.comments);
 
     const [retreivedComment, setRetreivedComment] = useState([])
 
@@ -16,7 +15,6 @@ function Post({ post, isFollowed, auth }) {
     })
 
     const handleChange = (e) => {
-        console.log(e.target.value)
         setComment({
             ...comment,
             comment: e.target.value
@@ -74,7 +72,7 @@ function Post({ post, isFollowed, auth }) {
                         </div>
                     </div>
                     <div className='my-[10px] w-full p-0 border-[0.5px] border-[#363636]'></div>
-                    <div className="d-flex flex-column justify-content-between">
+                    <div className="d-flex flex-column justify-content-between max-h-full h-full">
                         <div className="d-flex px-4">
                             <div className=" font-weight-bold">
                                 <Link className="text-decoration-none fw-bold" href={`/profile/${post.user.id}`}>
@@ -85,10 +83,10 @@ function Post({ post, isFollowed, auth }) {
                         </div>
 
                         {/* comments */}
-                        <div className="px-4">
+                        <div className="px-4 h-screen overflow-y-scroll">
                             {post.comments.map((comment)=>{
                                 return(
-                                    <div className="d-flex align-items-baseline gap-2">
+                                    <div key={comment.id} className="d-flex align-items-baseline gap-2">
                                         <div className="d-flex w-[20%]">
                                             <Link className="text-decoration-none" href={`/profile/${ comment.user.id }`}>
                                                 <img className="w-25 rounded-circle" src={`/storage/${ comment.user.profile.image }`} alt="user-profile-image" />
