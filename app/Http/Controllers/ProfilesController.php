@@ -50,9 +50,9 @@ class ProfilesController extends Controller
     {
         $this->authorize('update', $user->profile);
 
-        dd(request());
         if (request('image')) { //if the request has an image
             $imagePath = request('image')->store('profile','public');
+            
             $imageArray = ['image'=> $imagePath];
         }
 

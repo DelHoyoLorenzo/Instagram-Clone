@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FollowButton from '@/Components/FollowButton'
+import { Link } from '@inertiajs/react'
 
 function Index({ user, followers, following, profile, auth }) {
     // user could be either the authUser or a different one, profile is the profile I am retreiveng, it could be either the auth one or a different one
-    console.log(user)
     
     const [isFollowed, setIsFollowed] = useState(false);
     
@@ -13,13 +13,16 @@ function Index({ user, followers, following, profile, auth }) {
             setIsFollowed(true)
         }
     })
+    
+    
+    console.log(auth.user.profile);
 
   return (
     <AuthenticatedLayout user={auth.user}>
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-3 p-5">
-                    {/* <img src={`/storage${user.profile.image}`} alt="profile-image" className="rounded-circle w-100" /> */}
+                <div class="relative col-3 pt-5 h-[150px] w-[150px]">
+                    <img src={`/storage/${user.profile.image}`} alt="profile-image" className="top-0 rounded-[50%] h-full w-full object-fit-fill " />
                 </div>
                 <div class="col-6 pt-5">
                     <div class="d-flex justify-content-between align-items-baseline">
@@ -36,18 +39,18 @@ function Index({ user, followers, following, profile, auth }) {
                             {
                             (user.id === auth.user.id) ?
                             (<div className='flex '>
-                                <a href={`/profile/${ user.id }/edit`}>
-                                    <button class="mx-2 bg-[#1877F2] p-2 rounded-md">Edit Profile</button>
-                                </a>
-                                <a href="/p/create">
-                                    <button class="mx-2 bg-[#1877F2] p-2 rounded-md">New Post</button>
-                                </a>
+                                <Link href={`/profile/${ user.id }/edit`}>
+                                    <button class="mx-2 bg-[#262626] p-2 rounded-md">Edit Profile</button>
+                                </Link>
+                                <Link href="/p/create">
+                                    <button class="mx-2 bg-[#262626] p-2 rounded-md">New Post</button>
+                                </Link>
                             </div>
                             ) : 
                             (
-                            <a href="/messages/{{ $user->profile->user_id }}">
+                            <Link href="/messages/{{ $user->profile->user_id }}">
                                 <button class="mx-2 text-white bg-[#1877F2] p-2 rounded-md">Message</button>
-                            </a>
+                            </Link>
                             )
                             }
                         </div>
@@ -70,21 +73,21 @@ function Index({ user, followers, following, profile, auth }) {
                     </div>
                     <div class="pt-4 font-weight-bold text-white">{ user.profile.title }</div>
                     <div className='text-white'>{ user.profile.description }</div>
-                    <div><a href="{{$user->profile->url}}" target="_blank">{ user.profile.url || 'link'}</a></div>
+                    <div><a href={`${user.profile.url}`} target="_blank">{ user.profile.url || 'link'}</a></div>
                 </div>
                 <hr class="mt-5" />
             </div>
             <div class="row pt-5">
                 {user.posts.map((post)=>{
                     return(
-                        <div class="col-4">
-                            <a class="w-10 text-decoration-none" href={`/p/${post.id}`}>
+                        <div key={post.id} class="col-4">
+                            <Link class="w-10 text-decoration-none" href={`/p/${post.id}`}>
                                 {post.image ? (
                                     <img class="w-100 rounded" src={`/storage/${ post.image }`} alt="post-image" />
                                 ) : (
                                     <p>No image available</p>
                                 )}
-                            </a>
+                            </Link>
                         </div>
                     )
                 })}

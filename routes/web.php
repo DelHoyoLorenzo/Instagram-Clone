@@ -24,7 +24,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile/{user}', [ProfilesController::class, 'index'])->name('profile.index');
     Route::get('/profile/{user}/edit', [ProfilesController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile/{user}', [ProfilesController::class, 'update'])->name('profile.update');
+    Route::post('/profile/{user}', [ProfilesController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -57,6 +57,10 @@ Route::post('/like/{post}', [App\Http\Controllers\LikesController::class, 'store
 //----------------followers---------------------------------------
 
 Route::post('/follow/{user}', [App\Http\Controllers\FollowsController::class, 'store'])->middleware('auth');
+
+//----------------comments---------------------------------------
+
+Route::post('/comment', [App\Http\Controllers\CommentsController::class, 'create'])->middleware('auth');
 
 //----------------------------------------------------------------
 require __DIR__.'/auth.php';

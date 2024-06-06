@@ -4,15 +4,22 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { router } from '@inertiajs/react'
 
 function EditProfile({ user, auth }) {
-    console.log(auth)
-    const [ form, setForm ] = useState({
+
+    /* const [ form, setForm ] = useState({
         image: '',
         title: '',
         description: '',
         url: '',
-    });
+    }); */
 
-    const handleFileChange = (e) => {
+    const { data, setData, post, progress } = useForm({
+        image: null,
+        title: '',
+        description: '',
+        url: '',
+    })
+
+    /* const handleFileChange = (e) => {
         const file = e.target.files[0];
         setForm({
             ...form,
@@ -25,16 +32,16 @@ function EditProfile({ user, auth }) {
             ...form,
             [e.target.name]: e.target.value,
         })
-    }
+    } */
 
     const submit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
+        /* const formData = new FormData();
         formData.append('image', form.image);
         formData.append('title', form.title);
         formData.append('description', form.description);
         formData.append('url', form.url);
-        console.log(formData)
+        console.log(formData) */
         /* try {
             let { data } = await axios.patch(`http://localhost:8000/profile/${auth.user.id}`, formData)
 
@@ -46,11 +53,13 @@ function EditProfile({ user, auth }) {
         } */
 
 
-    router.patch(`http://localhost:8000/profile/${auth.user.id}`, form, {
-    forceFormData: true,
-})
+        router.post(`http://localhost:8000/profile/${auth.user.id}`, data, {
+            _method: 'patch',
+            forceFormData: true,
+        })
     };
 
+    console.log(data);
   return (
     <AuthenticatedLayout user={auth.user}>
         <div className="container py-4">
@@ -70,30 +79,30 @@ function EditProfile({ user, auth }) {
                                     </div>
                                 </div>
 
-                                <input onChange={handleFileChange} className="btn btn-primary" type="file" name="image" id="image" role="alert" />
+                                <input onChange={e => setData('image', e.target.files[0])} className="btn btn-primary" type="file" /* name="image" id="image" */ />
                             </div>
 
                             <div className="form-group row text-white">
                                 <label for="title" className="col-md-4 col-form-label">Title</label>
-                                <input onChange={handleChange} id="title" 
+                                <input onChange={e => setData('title', e.target.value)} id="title" 
                                 type="text" 
-                                className="bg-black text-white rounded-lg border-[#323539]" name="title" value={form.title}
+                                className="bg-black text-white rounded-lg border-[#323539]" name="title" value={data.title}
                                 autocomplete="title" autofocus /> 
                         
                             </div>
                             <div className="form-group row text-white">
                                 <label for="description" className="col-md-4 col-form-label ">Description</label>
-                                <input onChange={handleChange} id="description" 
+                                <input onChange={e => setData('description', e.target.value)} id="description" 
                                 type="text" 
-                                className="bg-black text-white rounded-lg border-[#323539]" name="description" value={form.description}
+                                className="bg-black text-white rounded-lg border-[#323539]" name="description" value={data.description}
                                 autocomplete="description" autofocus />
                         
                             </div>
                             <div class="form-group row text-white">
                                 <label for="url" className="col-md-4 col-form-label">URL</label>
-                                <input onChange={handleChange} id="url" 
+                                <input onChange={e => setData('url', e.target.value)} id="url" 
                                 type="text" 
-                                className="bg-black text-white rounded-lg border-[#323539]" name="url" value={form.url}
+                                className="bg-black text-white rounded-lg border-[#323539]" name="url" value={data.url}
                                 autocomplete="url" autofocus />
                     
                             </div>

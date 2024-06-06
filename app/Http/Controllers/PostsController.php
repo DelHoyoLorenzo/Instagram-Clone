@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Models\Post;
@@ -17,7 +18,7 @@ class PostsController extends Controller
         $profile = auth()->user()->profile;
         $user = auth()->user();
         
-        $posts = Post::whereIn('user_id', $users)->with(['user', 'likes', 'comments'])->latest()->get();
+        $posts = Post::whereIn('user_id', $users)->with(['user.profile', 'likes', 'comments'])->latest()->get();
         //or use orderBy('created_at','DESC') to order like that
         //with('user')-> says to laravel just do one query instead of doing one query per iteration, look telescope ???
 
@@ -62,13 +63,14 @@ class PostsController extends Controller
     {
         // attaching the relation user to the post
         /* $post->load('user', 'comments.user', 'likes'); */
-        $retreived_post = Post::with(['comments.user.profile', 'likes', 'user.profile'])->find($post->id);
         // the line above retreives all posts relations and also user relation for comments, it doesnt work with load
+        $retreived_post = Post::with(['comments.user.profile', 'likes', 'user.profile'])->find($post->id);
+        $retreived_coments = Comment::where('post_id', $post->id)->with('user.profile')->get(); 
 
         $authUser = auth()->user();
         
         $isFollowed = $authUser->following->contains('user_id', $post->user_id);
 
-        return Inertia::render('Posts/Post', [ 'post' => $retreived_post, 'isFollowed' => $isFollowed ]);
+        return Inertia::render('Posts/Post', [ 'post' => $retreived_post, 'isFollowed' => $isFollowed, 'comments' => $retreived_coments ]);
     }
 }
