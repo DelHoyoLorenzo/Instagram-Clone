@@ -53,7 +53,7 @@ function SideBar({user}) {
 
                 <Link href={`/profile/${ user.id }`} class="text-decoration-none">
                     <div class="d-flex gap-3 align-items-center">
-                        {/* <img src="{{ auth()->user()->profile->profileImage() }}" alt="user-profile-image" style='width: 28px; border-radius: 40%; ' /> */}
+                        <img className="w-[28px] rounded-[40%] rounded-circle" src={`/storage${user.profile?.image}`} alt="user-profile-image" />
                         <p class="m-0">Profile</p>
                     </div>
                 </Link>

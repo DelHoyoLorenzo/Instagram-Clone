@@ -13,9 +13,7 @@ class ProfilesController extends Controller
     {
         $user_id = (int) $request;
         $auth_user = auth()->user();
-        /* $following = auth()->user()->following; // does not work with following()
-
-        */
+        /* $following = auth()->user()->following; // does not work with following()*/
         
         $user_requested = User::where('id', $user_id)->with(['profile', 'posts', 'following'])->first();
         
@@ -43,17 +41,18 @@ class ProfilesController extends Controller
     }
 
     public function edit(User $user){
-        $this->authorize('update', $user->profile); //protect this route
-        return view('profiles.edit', compact('user'));
+        $this->authorize('update', $user->profile); //protect this route, for logged users and also just for the current users's profile
+
+        return Inertia::render('Profile/EditProfile', ['user' => $user]);
     }
 
-    public function update(User $user)
+    public function update(User $user) // MODEL BINDING!!!!!!!!!!! LARAVEL RESOLVES IT AUTOMATICALLY BY TAKING DE ID FROM THE URL, it gives a model instance just by resolving the url
     {
         $this->authorize('update', $user->profile);
 
+        dd(request());
         if (request('image')) { //if the request has an image
             $imagePath = request('image')->store('profile','public');
-
             $imageArray = ['image'=> $imagePath];
         }
 

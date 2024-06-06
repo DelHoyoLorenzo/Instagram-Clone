@@ -7,6 +7,10 @@ use App\Models\Profile;
 
 class ProfilePolicy
 {
+    protected $policies = [
+        Profile::class => ProfilePolicy::class,
+    ];
+
     /**
      * Create a new policy instance.
      */
@@ -17,6 +21,6 @@ class ProfilePolicy
 
     public function update(User $user, Profile $profile)
     {
-        return $user->id == $profile->user_id;
+        return $user->id === $profile->user_id;
     }
 }

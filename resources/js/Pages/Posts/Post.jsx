@@ -20,11 +20,11 @@ function Post({ post, isFollowed, auth }) {
 
     const handleComment = async () => {
         try {
-            let { data } = await axios.post();
+            /* let { data } = await axios.post(`http://localhost:8000/${}`);
 
             if( data ){
 
-            }
+            } */
 
         } catch (error) {
             console.log(error);

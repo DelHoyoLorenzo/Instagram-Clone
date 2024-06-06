@@ -19,7 +19,7 @@ function Index({ user, followers, following, profile, auth }) {
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-3 p-5">
-                    <img src={`${user.profile.profileImage}`} alt="profile-image" class="rounded-circle w-100" />
+                    {/* <img src={`/storage${user.profile.image}`} alt="profile-image" className="rounded-circle w-100" /> */}
                 </div>
                 <div class="col-6 pt-5">
                     <div class="d-flex justify-content-between align-items-baseline">
@@ -32,9 +32,6 @@ function Index({ user, followers, following, profile, auth }) {
                                     null
                             }
                             
-                            <a href="/messages/{{ $user->profile->user_id }}">
-                                <button class="mx-2 text-white bg-[#1877F2] p-2 rounded-md">Message</button>
-                            </a>
                             {/* #262626 bg button color -- */}
                             {
                             (user.id === auth.user.id) ?
@@ -46,7 +43,12 @@ function Index({ user, followers, following, profile, auth }) {
                                     <button class="mx-2 bg-[#1877F2] p-2 rounded-md">New Post</button>
                                 </a>
                             </div>
-                            ) : (null)
+                            ) : 
+                            (
+                            <a href="/messages/{{ $user->profile->user_id }}">
+                                <button class="mx-2 text-white bg-[#1877F2] p-2 rounded-md">Message</button>
+                            </a>
+                            )
                             }
                         </div>
                     </div>

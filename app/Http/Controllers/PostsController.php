@@ -17,7 +17,7 @@ class PostsController extends Controller
         $profile = auth()->user()->profile;
         $user = auth()->user();
         
-        $posts = Post::whereIn('user_id', $users)->with('user')->with('likes')->latest()->get();
+        $posts = Post::whereIn('user_id', $users)->with(['user', 'likes', 'comments'])->latest()->get();
         //or use orderBy('created_at','DESC') to order like that
         //with('user')-> says to laravel just do one query instead of doing one query per iteration, look telescope ???
 
