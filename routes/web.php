@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\PostsController::class, 'index']);
     Route::get('/p/create', [App\Http\Controllers\PostsController::class, 'create'])->name('posts.create'); //this line has to be on top of {post} because in the other way would generate a conflict
     Route::get('/p/{post}', [App\Http\Controllers\PostsController::class, 'show'])->name('posts.show');
-    Route::post('/p', [App\Http\Controllers\PostsController::class, 'store'])->name('posts.create');
+    Route::post('/p/create/{user}', [App\Http\Controllers\PostsController::class, 'store'])->name('posts.create');
 });
 
 //----------------chats----------------------------------------

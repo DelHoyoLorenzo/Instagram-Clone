@@ -33,15 +33,15 @@ class PostsController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        return Inertia::render('Posts/CreatePost');
     }
 
-    public function store()
+    public function store(User $user)
     {
         $data = request()->validate([
             /* 'another'=>'', pass a different file without validate it */
             'caption'=>'required',
-            'image'=> ['required', 'image'],
+            'image'=> 'required',
         ]);
 
         $imagePath = request('image')->store('uploads','public');

@@ -55,6 +55,7 @@ class ProfilesController extends Controller
             $imagePath = request('image')->store('profile','public');
 
             $imageArray = ['image'=> $imagePath];
+            // I put the image into an array because then I merge the $data array and the image array so the whole array has 'image' => '/path'
         }
 
         $data = request()->validate([
@@ -64,7 +65,7 @@ class ProfilesController extends Controller
             'image'=>'',
         ]);
 
-        auth()->user()->profile->update(array_merge($data, $imageArray ?? []));
+        auth()->user()->profile->update(array_merge($data, $imageArray ?? [ 'image' => auth()->user()->profile->image ]));
         //we just grab the authenticated user, so I can only edit it if I am the user that is logged
 
         return redirect('/profile/'.$user->id);

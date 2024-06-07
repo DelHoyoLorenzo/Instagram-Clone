@@ -6,7 +6,6 @@ import { Link } from '@inertiajs/react'
 
 function Index({ posts, user, profile, auth }) {
     
-    console.log(auth.user.profile);
   return (
     <AuthenticatedLayout user={auth.user} /* header={<SideBar />} */>
         <div className="container bg-black text-white">

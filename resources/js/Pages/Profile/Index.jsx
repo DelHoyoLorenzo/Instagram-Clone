@@ -39,7 +39,7 @@ function Index({ user, followers, following, profile, auth }) {
                                 <Link href={`/profile/${ user.id }/edit`}>
                                     <button class="mx-2 bg-[#262626] p-2 rounded-md">Edit Profile</button>
                                 </Link>
-                                <Link href="/p/create">
+                                <Link href={`/p/create`}>
                                     <button class="mx-2 bg-[#262626] p-2 rounded-md">New Post</button>
                                 </Link>
                             </div>
