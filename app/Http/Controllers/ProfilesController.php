@@ -19,6 +19,8 @@ class ProfilesController extends Controller
         
         /* $follows = $user_requested->following->contains($auth_user->id); */
 
+        $isFollowed = auth()->user()->following->contains('user_id', $user_id);
+
         $followers = Profile::where('user_id', $user_id)->with('followers')->get();
 
         return Inertia::render('Profile/Index', [
@@ -26,6 +28,7 @@ class ProfilesController extends Controller
             'profile' => $user_requested->profile,
             'authProfile'=> $auth_profile,
             'followers' => $followers,
+            'isFollowed' => $isFollowed,
             'following' =>$user_requested->following,
         ]);
         
@@ -44,7 +47,7 @@ class ProfilesController extends Controller
     public function edit(User $user){
         $this->authorize('update', $user->profile); //protect this route, for logged users and also just for the current users's profile
 
-        return Inertia::render('Profile/EditProfile', ['user' => $user]);
+        return Inertia::render('Profile/EditProfile', ['user' => $user, 'profile'=> $user->profile]);
     }
 
     public function update(User $user) // MODEL BINDING!!!!!!!!!!! LARAVEL RESOLVES IT AUTOMATICALLY BY TAKING DE ID FROM THE URL, it gives a model instance just by resolving the url
@@ -59,8 +62,8 @@ class ProfilesController extends Controller
         }
 
         $data = request()->validate([
-            'title'=>'required',
-            'description'=>'required',
+            'title'=>'string',
+            'description'=>'string',
             'url'=>'url',
             'image'=>'',
         ]);

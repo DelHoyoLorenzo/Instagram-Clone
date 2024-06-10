@@ -1,49 +1,32 @@
 import { useNotifications } from '@/Contexts/NotificationContext';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import Index from '@/Pages/Chats/Index';
 import Echo from 'laravel-echo'
 import React, { useEffect, useState } from 'react'
 
-function Chat({id, messages, userId, user, authUser}) {
-    const { dispatch } = useNotifications();
+function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
+    /* ['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id] */
+    // const { dispatch } = useNotifications();
 
     const [chatMessages, setChatMessages] = useState(messages);
     const [newMessages, setNewMessages] = useState([])
 
-    const [receiverUser, setReceiverUser] = useState(user)
-    const [chatId, setChatId] = useState(id)
-    const [receiverUserId, setReceiverUserId] = useState(userId)
-    const [userAuth, setUserAuth] = useState(authUser)
     const [values, setValues] = useState({
         content: "",
     })
 
-    async function setSeenMessages(){
-        let info = {
-            userId: authUser.id,
-        }
-
-        try {
-            let { data } = await axios.get(`http://localhost:8000/api/seen/${chatId}`, info);
-
-            if(data){
-                console.log('se setearon en seen los mensajes, despacho la action')
-                dispatch({ type: 'FETCH_NOTIFICATIONS' });
-            }
-        
-        } catch (error) {
-            console.log(error.message)    
-        }
-    }
-
     useEffect(()=>{
         const messagesDiv = document.getElementById('messages');
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        console.log('hola soy ' + authUser.username)
+
+        if(messagesDiv){
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
         // swap seen attribute to true
         setSeenMessages();
         
         /*  window.Echo.channel('chat').listen('MessageSent', (e) => { */
 
-        window.Echo.private(`chat.${authUser.id}.${receiverUserId}`) .listen('MessageSent', (e) => {
+        window.Echo.private(`chat.${auth.user.id}.${receiverUser.id}`) .listen('MessageSent', (e) => {
             console.log(authUser.id)
             console.log(e)
             setNewMessages(prevMessages => [...prevMessages, e.eventMessage]);
@@ -74,7 +57,7 @@ function Chat({id, messages, userId, user, authUser}) {
         let info = {
             content: values.content,
             sender_user_id: userAuth.id,
-            receiver_user_id: receiverUserId,
+            receiver_user_id: receiverUser.id,
             chat_id: chatId
         }
 
@@ -91,13 +74,35 @@ function Chat({id, messages, userId, user, authUser}) {
         }
     }
 
+    async function setSeenMessages(){
+        let info = {
+            userId: auth.user.id,
+        }
+
+        try {
+            let { data } = await axios.get(`http://localhost:8000/api/seen/${chatId}`, info);
+
+            if(data){
+                console.log('se setearon en seen los mensajes, despacho la action')
+                dispatch({ type: 'FETCH_NOTIFICATIONS' });
+            }
+        
+        } catch (error) {
+            console.log(error.message)    
+        }
+    }
+
   return (
-    <div class="d-flex flex-column justify-content-between w-full max-h-full" /* style="max-height: 100vh;" */>
+    <Index chats={ chats } auth={ auth }>
+
+    {console.log(receiverUser.profile)}
+
+    { chatMessages ? (<div class="d-flex flex-column justify-content-between w-full max-h-full">
         <div class="p-3 px-2 border-b-[2px] border-[#202020]" >
             <a href="/messages/{{ $chatId }}" class="text-decoration-none" id="chatLink">
-                <div class="d-flex gap-2 align-items-center ">
+                <div class="d-flex gap-2 align-items-center text-white">
                     <div className='w-[10%]'>
-                        <img class="w-100 rounded-circle" /* src="{{ $receiverUser->profile->profileImage() }}" */ alt="receiver-profile-picture" />
+                        <img class="w-100 rounded-circle" src={ receiverUser.profile?.image } alt="receiver-profile-picture" />
                     </div>
                     <p class="m-0">{receiverUser.username}</p>
                 </div>
@@ -133,7 +138,7 @@ function Chat({id, messages, userId, user, authUser}) {
             {newMessages ? (newMessages.map((m)=> {
                 return (userAuth.id === m.sender_user_id) ?
                 (
-                <div key={m.id} className="py-1">
+                    <div key={m.id} className="py-1">
                     <div className="d-flex align-items-center justify-content-end gap-2">
                         <p className="m-0 text-white p-2 rounded-xl bg-[#3797F0]">{m.content}</p>
                     </div>
@@ -145,7 +150,7 @@ function Chat({id, messages, userId, user, authUser}) {
                         <div id="receiver-profile-picture">
                             {/* <a href={`/profile/${message.chat.users.find(user => user.id === message.sender_user_id).profile.id}`}>
                                 <img className="rounded-circle w-100" src={message.chat.users.find(user => user.id === message.receiver_user_id).profile.profileImage()} alt="logged-in-user-profile-picture" />
-                            </a> */}
+                                </a> */}
                         </div>
                         <p className="m-0 text-white p-2 rounded-lg bg-[#292929]">{m.content}</p>
                     </div>
@@ -165,7 +170,19 @@ function Chat({id, messages, userId, user, authUser}) {
                 <button class="flex-end m-1 border-0 fw-bold text-[#0095f6]" type="submit">Send</button>
             </form>
         </div>
-    </div>
+    </div>) 
+    
+    :
+
+    (<div className="col-8 d-flex flex-column align-items-center ">
+        <div class="d-flex flex-column align-items-center py-4">
+            <h4 className='text-white'>Your messages</h4>
+            <p className='text-white'>Send a message to start a chat.</p>
+            <button class="text-white mx-2 bg-[#0095F6] p-2 rounded-md">Send message</button>
+        </div>
+    </div>)}
+    
+    </Index>
   )
 }
 

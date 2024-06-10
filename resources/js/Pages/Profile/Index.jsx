@@ -3,16 +3,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FollowButton from '@/Components/FollowButton'
 import { Link } from '@inertiajs/react'
 
-function Index({ user, followers, following, profile, auth }) {
+function Index({ user, followers, following, profile, auth, isFollowed }) {
     // user could be either the authUser or a different one, profile is the profile I am retreiveng, it could be either the auth one or a different one
-    
-    const [isFollowed, setIsFollowed] = useState(false);
-    
-    following.map((following)=>{
-        if(following.user_id == profile.user_id){
-            setIsFollowed(true)
-        }
-    })
+    const createChat = () => {
+        axios.get(`http://localhost:8000/chats/${ user.profile.user_id }`)
+        .then((response)=>{
+            console.log(response)
+        })
+    }
 
   return (
     <AuthenticatedLayout user={auth.user}>
@@ -31,22 +29,21 @@ function Index({ user, followers, following, profile, auth }) {
                                 : 
                                     null
                             }
-                            
-                            {/* #262626 bg button color -- */}
+                    
                             {
                             (user.id === auth.user.id) ?
                             (<div className='flex '>
                                 <Link href={`/profile/${ user.id }/edit`}>
-                                    <button class="mx-2 bg-[#262626] p-2 rounded-md">Edit Profile</button>
+                                    <button class="text-white mx-2 bg-[#262626] p-2 rounded-md">Edit Profile</button>
                                 </Link>
                                 <Link href={`/p/create`}>
-                                    <button class="mx-2 bg-[#262626] p-2 rounded-md">New Post</button>
+                                    <button class="text-white mx-2 bg-[#262626] p-2 rounded-md">New Post</button>
                                 </Link>
                             </div>
                             ) : 
                             (
-                            <Link href="/messages/{{ $user->profile->user_id }}">
-                                <button class="mx-2 text-white bg-[#1877F2] p-2 rounded-md">Message</button>
+                            <Link href={`/chats/${ user.profile.user_id }`}>
+                                <button /* onClick={createChat} */ class="text-white mx-2 bg-[#262626] p-2 rounded-md">Message</button>
                             </Link>
                             )
                             }

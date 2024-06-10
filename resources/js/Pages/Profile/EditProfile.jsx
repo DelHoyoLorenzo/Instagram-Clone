@@ -3,20 +3,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link, useForm } from '@inertiajs/react';
 import { router } from '@inertiajs/react'
 
-function EditProfile({ user, auth }) {
-
-    /* const [ form, setForm ] = useState({
-        image: '',
-        title: '',
-        description: '',
-        url: '',
-    }); */
+function EditProfile({ user, profile, auth }) {
 
     const { data, setData, post, progress } = useForm({
         image: null,
-        title: '',
-        description: '',
-        url: '',
+        title: profile.title,
+        description: profile.description,
+        url: profile.url,
     })
 
     /* const handleFileChange = (e) => {
@@ -59,7 +52,6 @@ function EditProfile({ user, auth }) {
         })
     };
 
-    console.log(data);
   return (
     <AuthenticatedLayout user={auth.user}>
         <div className="container py-4">
@@ -72,10 +64,10 @@ function EditProfile({ user, auth }) {
                             </div>
                             <div className="d-flex align-items-center justify-content-between rounded py-3 my-4 bg-[#262626]">
                                 <div className="col-6 d-flex align-items-center">
-                                    <img className="w-25 rounded-circle" src={`/storage${auth.user.profile?.image}`} alt="user-profile-image" />
+                                    <img className="w-25 rounded-circle" src={`/storage/${profile?.image}`} alt="user-profile-image" />
                                     <div className="d-flex flex-column m-1">
-                                        <h3>{ user.username }</h3>
-                                        <p>{ user.profile.description }</p>
+                                        <h3 className='text-white'>{ user.username }</h3>
+                                        <p className='text-white'>{ user.profile.description }</p>
                                     </div>
                                 </div>
 

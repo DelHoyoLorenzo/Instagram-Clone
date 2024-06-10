@@ -20,29 +20,29 @@ function CreatePost({ auth }) {
 
   return (
     <AuthenticatedLayout user={auth.user}>
-        <div class="container">
+        <div className="container">
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <div class="row">
-                    <div class="col-8 offset-2">
-                        <div class="row mb-3">
-                            <div class="form-group row">
-                            <div class="row">
-                                <h1>Add New Post</h1>
+                <div className="row">
+                    <div className="col-8 offset-2">
+                        <div className="row mb-3">
+                            <div className="form-group row">
+                            <div className="row">
+                                <h1 className='text-white'>Add New Post</h1>
                             </div>
-                            <label for="caption" class="col-md-4 col-form-label text-md-end">Post Caption</label>
+                            <label for="caption" className="col-md-4 col-form-label text-md-end text-white">Post Caption</label>
                             <input 
                             onChange={(e) => setData('caption', e.target.value)}
                             id="caption" 
                             type="text" 
-                            class="" name="caption" value={data.caption}
+                            className="" name="caption" value={data.caption}
                             autocomplete="caption" autofocus />
 
-                            <div class="row">
-                                <label for="image" class="col-md-4 col-form-label text-md-end">Post Image</label>
-                                <input onChange={e => setData('image', e.target.files[0])} type="file" name="image" class="" id="image" />
+                            <div className="row">
+                                <label for="image" className="col-md-4 col-form-label text-md-end text-white">Post Image</label>
+                                <input onChange={e => setData('image', e.target.files[0])} type="file" name="image" className="text-white" id="image" />
                             </div>
-                            <div class="row">
-                                <button class="btn btn-primary">
+                            <div className="row">
+                                <button className="btn btn-primary">
                                 Add New Post 
                                 </button>
                             </div>

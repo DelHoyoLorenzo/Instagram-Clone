@@ -5,33 +5,73 @@ import React from 'react'
 import { Link } from '@inertiajs/react'
 
 function Index({ posts, user, profile, auth }) {
-    
+
+    const formatDate = (dateCreated) => {
+        const actualDate = new Date();
+        const creationDate = new Date(dateCreated)
+
+        const differenceInMilliseconds = actualDate - creationDate;
+
+        // Constantes para conversiones
+        const millisecondsPerSecond = 1000;
+        const millisecondsPerMinute = 60 * millisecondsPerSecond;
+        const millisecondsPerHour = 60 * millisecondsPerMinute;
+        const millisecondsPerDay = 24 * millisecondsPerHour;
+
+        // Convertir milisegundos a días y horas
+        const differenceInDays = Math.floor(differenceInMilliseconds / millisecondsPerDay);
+        const remainingMillisecondsAfterDays = differenceInMilliseconds % millisecondsPerDay;
+        const differenceInHours = Math.floor(remainingMillisecondsAfterDays / millisecondsPerHour);
+        const remainingMillisecondsAfterHours = differenceInMilliseconds % millisecondsPerHour;
+        const differenceInMinutes = Math.floor(remainingMillisecondsAfterHours / millisecondsPerMinute);
+
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        if(differenceInDays > 7){
+            const creationMonth = monthNames[creationDate.getMonth()];
+            return `${creationMonth} ${creationDate.getDay()}`
+        }else if(differenceInDays > 0){
+            return `${differenceInDays}d`
+        }else if(differenceInHours > 0){
+            return `${differenceInHours}h`
+        }
+            return `${differenceInMinutes}m`
+    }
+
   return (
     <AuthenticatedLayout user={auth.user} /* header={<SideBar />} */>
-        <div className="container bg-black text-white">
+        <div className="container bg-black">
             <div className="row">
                 <div className="col-9">
                 {posts.map((post, index) => (
                     <div key={post.id}>
-                        <div className="col-6 offset-2 py-3 d-flex gap-3 text-white align-items-center">
+                        <div className="col-6 offset-2 py-2 flex justify-start items-center">
                             <div className="w-25">
                                 <Link className="text-decoration-none" href={`/profile/${post.user.id}`}>
                                     <img className="w-100 p-0 m-0 rounded-circle" src={`storage/${post.user.profile?.image}`} alt="user-profile-image" />
                                 </Link>
                             </div>
-                            <div className="pl-1 w-full">
-                                <p className="fw-bold m-0">
-                                    <a className="text-decoration-none" href={`/profile/${post.user.id}`}>{ post.user.username }</a>
+                            <div className="pl-1 flex items-end w-full">
+                                <p className="w-full m-0 fw-bold">
+                                    <a className="w-full text-decoration-none text-white" href={`/profile/${post.user.id}`}>{ post.user.username }</a>
                                 </p>
+                                <div className='text-[#A8A8A8] text-3xl'>.</div>
+                                <div className="pl-1 w-full text-[#A8A8A8]">
+                                    <p className="fw-bold m-0">
+                                        <a className="text-[#A8A8A8] text-decoration-none" href={`/profile/${post.user.id}`}>{formatDate(post.created_at)}</a>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        
+
+                    {/* post image */}
                         <div className="col-7 offset-2">
                             <Link href={`/p/${post.id}`}>
                                 <img className="w-100 rounded" src={`/storage/${post.image}`} alt="post-image" />
                             </Link>
                         </div>
-                        <div className="col-6 offset-2 py-2">
+                    {/* likes */}
+                        <div className="col-7 offset-2 py-2">
                             <div className="d-flex gap-1 my-2">
                                 <LikeButton liked={ post.likes } post_id={post.id} user_id={auth.user.id} key={post.id} />
                                 <Link href={`/p/${post.id}`}>
@@ -43,13 +83,13 @@ function Index({ posts, user, profile, auth }) {
                             <div className="d-flex align-items-baseline gap-2">
                                 <div>
                                     <Link className="text-decoration-none fw-bold" href={`/profile/${post.user.id}`}>
-                                        <span>{ post.user.username }</span>
+                                        <span className='text-white'>{ post.user.username }</span>
                                     </Link>
                                 </div>
                                 <p className="p-0 m-0 font-weight-bold text-white">{ post.caption }</p>
                             </div>
                             <Link className="text-decoration-none m-0 p-0" href={`/p/${post.id}`}>
-                                <p className="p-0 my-2 text-comment" >View all <span>{ post.comments.length || '' }</span> comments...</p>
+                                <p className="p-0 my-2 text-comment text-[#A8A8A8]" >View all <span>{ post.comments.length || '' }</span> comments...</p>
                             </Link>
                         </div>
                         <hr className="col-7 offset-2 my-0" />
@@ -73,13 +113,13 @@ function Index({ posts, user, profile, auth }) {
                             </div>
                             <div className="d-flex flex-column align-items-baseline ml-[10px]" >
                                 <Link className="text-decoration-none" href={`/profile/${auth.user.id}`}>
-                                    <p className="fw-bold m-0">{ auth.user.username }</p>
-                                    <p>{ auth.user.profile.description }</p>
+                                    <p className="fw-bold m-0 text-white">{ auth.user.username }</p>
+                                    <p className='text-white'>{ auth.user.profile.description }</p>
                                 </Link>
                             </div>
                     </div>
                     <div>
-                        <p>Suggested for you</p>
+                        <p className='text-white'>Suggested for you</p>
                     </div>
                 </div>
 

@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Chats;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Messages\MessagesController;
 use App\Models\Chat;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ChatsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function show()
     {
         $chats = auth()->user()->chats()->with('users')->get(); // only works with the relation chats() with the parentesis dnw
@@ -21,13 +17,12 @@ class ChatsController extends Controller
         //return the conversations that the logged user have
         
         return Inertia::render('Chats/Index', ['chats'=>$chats]);
-        /* return view('chats.index', ['chats'=>$chats]); */
     }
 
     public function create($receiver_user_id)
     {
         $receiver_user_id = (int) $receiver_user_id;
-        
+
         $user = auth()->user();
 
         $existingChat = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
@@ -36,7 +31,8 @@ class ChatsController extends Controller
         ->whereHas('users', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
-        ->first();
+        ->first(); // here I search for a chat where involves the user we are trying to reach and the auth user
+        
         // case 2: already exists a chat with that person
         // first ask if the chats already exist
         // find a Chat that has an user_id that matches with the received_user_id 
@@ -46,8 +42,13 @@ class ChatsController extends Controller
         /* dd($existingChat); */
 
         if ($existingChat) {
-            $chats = Chat::all();
-            return view('chats.index', ['chats'=>$chats]);
+            /* $chats = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
+                $query->where('user_id', $receiver_user_id);
+            })->get(); */
+            $chats = auth()->user()->chats()->with('users')->get();
+
+            /* return Inertia('Chats/Index', ['chats' => $chats]); */
+            return redirect()->action([MessagesController::class, 'show']);
         }
 
         // case 1: first time auth user talks to receiver user
@@ -56,10 +57,14 @@ class ChatsController extends Controller
         // Create a new chat
         $newChat = new Chat();
         $newChat->save();
-        $chats = Chat::all();
+        $chats = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
+                $query->where('user_id', $receiver_user_id);
+        })->get();
+
         // Attach users to the new chat
         $newChat->users()->attach([$user->id, $receiver_user_id]);
         
-        return view('chats.index', ['chat' => $chats]);
+        // return Inertia::render('Chats/Index', ['chats' => $chats]);
+        return redirect('Chats/Chat');
     }
 }

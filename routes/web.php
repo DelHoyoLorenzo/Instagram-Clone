@@ -37,14 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/p/create/{user}', [App\Http\Controllers\PostsController::class, 'store'])->name('posts.create');
 });
 
-//----------------chats----------------------------------------
+//----------------chats & messages-----------------------------------
 
-Route::get('/inbox', [App\Http\Controllers\Chats\ChatsController::class, 'show'])->middleware("auth");
-/* Route::get('/chats/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 'create'])->middleware("auth"); */
-
-//----------------messages----------------------------------------
-
-Route::get('/messages/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'show'])->middleware('auth');
+Route::get('/inbox', [App\Http\Controllers\Chats\ChatsController::class, 'show'])->name('inbox')->middleware("auth");
+Route::get('/chats/{user}', [App\Http\Controllers\Chats\ChatsController::class, 'create'])->middleware("auth");
+Route::get('/t/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'show'])->name('chat')->middleware('auth');
 
 //----------------notifications-----------------------------------
 

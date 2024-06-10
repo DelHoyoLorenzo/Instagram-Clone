@@ -16,6 +16,7 @@ class MessagesController extends Controller
     {
         $chat_id = (int) $chat_id;
         $messages = Message::where('chat_id', $chat_id)->get();
+        
         $user = auth()->user();
         
         $users_involved = Chat::find($chat_id)->users->toArray(); // which is the data format received after I called find method to a db table??
@@ -27,14 +28,17 @@ class MessagesController extends Controller
         $first_receiver = reset($receivers);
         $receiver_id = $first_receiver['id'];
         $receiver_user = User::find($receiver_id);
+        
+        /* return response()->json(['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]); */
 
-        return response()->json(['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]);
-        /* return Inertia::render('Components/chat', ['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]); */
+        $chats = $user->chats;
+        $chats->load('users');
+
+        return Inertia::render('Chats/Chat', ['chats' => $chats, 'messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]);
     }
 
     public function create($chat_id)
     {
-        /* dd(request('content')); */
         $chat_id = (int) $chat_id;
 
         $message = Message::create([
@@ -43,8 +47,6 @@ class MessagesController extends Controller
             'receiver_user_id'=>request('receiver_user_id'), 
             'chat_id'=>request('chat_id')
         ]);
-
-        /* dd($message); */
         
         /* $messages = Message::where('chat_id', $chat_id)->get(); */
 

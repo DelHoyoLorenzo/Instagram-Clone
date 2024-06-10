@@ -45,7 +45,7 @@ function Post({ post, isFollowed, auth }) {
         <div className="container">
             <div className="row mt-5 d-flex justify-content-center ">
                 {/* post img */}
-                <div className="col-6 p-0">
+                <div className="col-6 p-0 h-full">
                     <img className="w-100" src={`/storage/${post.image}`} alt="post-image" />
                 </div>
 
@@ -83,7 +83,7 @@ function Post({ post, isFollowed, auth }) {
                         </div>
 
                         {/* comments */}
-                        <div className="px-4 h-screen overflow-y-scroll">
+                        <div className="px-4 h-full overflow-y-scroll">
                             {post.comments.map((comment)=>{
                                 return(
                                     <div key={comment.id} className="d-flex align-items-baseline gap-2">
@@ -93,7 +93,7 @@ function Post({ post, isFollowed, auth }) {
                                             </Link>
                                         </div>
                                         <Link className="text-decoration-none" href={`/profile/${ comment.user.id }`}>
-                                            <p className="fw-bold">{ comment.user.username }</p>
+                                            <p className="text-white fw-bold">{ comment.user.username }</p>
                                         </Link>
                                         <p className='m-0 text-white'>{ comment.comment  }</p>
                                         <div>
@@ -113,7 +113,7 @@ function Post({ post, isFollowed, auth }) {
                                             </Link>
                                         </div>
                                         <Link className="text-decoration-none" href={`/profile/${ comment.user.id }`}>
-                                            <p className="fw-bold">{ comment.user.username }</p>
+                                            <p className="text-white fw-bold">{ comment.user.username }</p>
                                         </Link>
                                         <p className='m-0 text-white'>{ comment.comment  }</p>
                                         <div>
