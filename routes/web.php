@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfilesController;
+use App\Http\Controllers\Chats\InboxController;
+use App\Http\Controllers\Chats\ChatsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +20,12 @@ use Inertia\Inertia;
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+//----------------user------------------------------------------
+
+Route::middleware('auth')->group(function () {
+    Route::get('/user/{user}', [ProfilesController::class, 'index'])->name('profile.index');
+});
 
 //----------------profile----------------------------------------
 
@@ -39,9 +47,9 @@ Route::middleware('auth')->group(function () {
 
 //----------------chats & messages-----------------------------------
 
-Route::get('/inbox', [App\Http\Controllers\Chats\ChatsController::class, 'show'])->name('inbox')->middleware("auth");
-Route::get('/chats/{user}', [App\Http\Controllers\Chats\ChatsController::class, 'create'])->middleware("auth");
-Route::get('/t/{chat}', [App\Http\Controllers\Messages\MessagesController::class, 'show'])->name('chat')->middleware('auth');
+Route::get('/inbox', [App\Http\Controllers\Chats\InboxController::class, 'show'])->name('inbox')->middleware("auth");
+/* Route::get('/chats/{user}', [App\Http\Controllers\Chats\ChatsController::class, 'create'])->middleware("auth"); */
+Route::get('/t/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 'show'])->name('chat')->middleware('auth');
 
 //----------------notifications-----------------------------------
 

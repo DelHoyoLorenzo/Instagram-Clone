@@ -2,69 +2,70 @@
 
 namespace App\Http\Controllers\Chats;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Messages\MessagesController;
 use App\Models\Chat;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ChatsController extends Controller
 {
-    public function show()
+    public function show($chat_id)
     {
-        $chats = auth()->user()->chats()->with('users')->get(); // only works with the relation chats() with the parentesis dnw
+        $chat_id = (int) $chat_id;
+        $messages = Message::where('chat_id', $chat_id)->get();
         
-        //return the conversations that the logged user have
-        
-        return Inertia::render('Chats/Index', ['chats'=>$chats]);
-    }
-
-    public function create($receiver_user_id)
-    {
-        $receiver_user_id = (int) $receiver_user_id;
-
         $user = auth()->user();
-
-        $existingChat = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
-            $query->where('user_id', $receiver_user_id);
-        })
-        ->whereHas('users', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })
-        ->first(); // here I search for a chat where involves the user we are trying to reach and the auth user
         
-        // case 2: already exists a chat with that person
-        // first ask if the chats already exist
-        // find a Chat that has an user_id that matches with the received_user_id 
+        $users_involved = Chat::find($chat_id)->users->toArray(); // which is the data format received after I called find method to a db table??
         
-        // TODO I should return the chats ordered by time, on a DESC way
-
-        /* dd($existingChat); */
-
-        if ($existingChat) {
-            /* $chats = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
-                $query->where('user_id', $receiver_user_id);
-            })->get(); */
-            $chats = auth()->user()->chats()->with('users')->get();
-
-            /* return Inertia('Chats/Index', ['chats' => $chats]); */
-            return redirect()->action([MessagesController::class, 'show']);
-        }
-
-        // case 1: first time auth user talks to receiver user
-        // create and return the chat with no messages in it, and also all the chats that the user has and also which ones that he received from others
+        $receivers = array_filter($users_involved, function ($user) {
+            return $user['id'] !== auth()->user()->id;
+        });
         
-        // Create a new chat
-        $newChat = new Chat();
-        $newChat->save();
-        $chats = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
-                $query->where('user_id', $receiver_user_id);
-        })->get();
-
-        // Attach users to the new chat
-        $newChat->users()->attach([$user->id, $receiver_user_id]);
+        $first_receiver = reset($receivers);
+        $receiver_id = $first_receiver['id'];
+        $receiver_user = User::find($receiver_id)->load('profile');
         
-        // return Inertia::render('Chats/Index', ['chats' => $chats]);
-        return redirect('Chats/Chat');
+        /* return response()->json(['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]); */
+
+        $chats = $user->chats;
+        $chats->load('users.profile');
+
+        return Inertia::render('Chats/Chat', ['chats' => $chats, 'messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id]);
     }
+
+    // public function create($chat_id)
+    // {
+    //     $chat_id = (int) $chat_id;
+
+    //     $message = Message::create([
+    //         'content'=>request('content'), 
+    //         'sender_user_id'=>request('sender_user_id'), 
+    //         'receiver_user_id'=>request('receiver_user_id'), 
+    //         'chat_id'=>request('chat_id')
+    //     ]);
+        
+    //     /* $messages = Message::where('chat_id', $chat_id)->get(); */
+
+    //     $chats = auth()->user()->chats;
+    //     $currentChat = $chats->firstWhere('id', $chat_id);
+
+    //     $usersInvolved = $currentChat->users->toArray();
+        
+    //     $receivers = array_filter($usersInvolved, function ($user) {
+    //         return $user['id'] !== auth()->user()->id;
+    //     });
+
+    //     $firstReceiver = reset($receivers);
+    //     $receiver_id = $firstReceiver['id'];
+
+    //     event(new MessageSent($message));
+
+    //     /* return view('chats.index', ['messages'=>$messages, 'chat_id'=>$chat_id ,'chats'=>$chats, 'receiver_user_id'=>$receiver_id]); */
+    //     /* return response()->json(['message' => $message]); */
+    //     /* return redirect('messages/'.$chat_id); */
+    // }
 }

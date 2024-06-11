@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 
 function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
     /* ['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id] */
-    // const { dispatch } = useNotifications();
+    /* const { dispatch } = useNotifications(); */
 
     const [chatMessages, setChatMessages] = useState(messages);
     const [newMessages, setNewMessages] = useState([])
@@ -27,8 +27,6 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
         /*  window.Echo.channel('chat').listen('MessageSent', (e) => { */
 
         window.Echo.private(`chat.${auth.user.id}.${receiverUser.id}`) .listen('MessageSent', (e) => {
-            console.log(authUser.id)
-            console.log(e)
             setNewMessages(prevMessages => [...prevMessages, e.eventMessage]);
             if(e.eventMessage.sender_user_id !== authUser.id){
                 setSeenMessages();
@@ -95,14 +93,12 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
   return (
     <Index chats={ chats } auth={ auth }>
 
-    {console.log(receiverUser.profile)}
-
     { chatMessages ? (<div class="d-flex flex-column justify-content-between w-full max-h-full">
         <div class="p-3 px-2 border-b-[2px] border-[#202020]" >
             <a href="/messages/{{ $chatId }}" class="text-decoration-none" id="chatLink">
                 <div class="d-flex gap-2 align-items-center text-white">
                     <div className='w-[10%]'>
-                        <img class="w-100 rounded-circle" src={ receiverUser.profile?.image } alt="receiver-profile-picture" />
+                        <img class="w-100 rounded-circle" src={ `/storage/${receiverUser.profile?.image}` } alt="receiver-profile-picture" />
                     </div>
                     <p class="m-0">{receiverUser.username}</p>
                 </div>

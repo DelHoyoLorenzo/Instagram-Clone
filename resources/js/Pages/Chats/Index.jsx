@@ -12,49 +12,19 @@ function Index({ chats, auth, children }) {
     /* let { notifications } = useNotifications();
     console.log(notifications) */
     
-    /* useEffect(()=>{
-
-    }, []) */
-
-    // const retreiveChatData = async (chatId) => {
-    //     console.log(chatId)
-    //     try {
-    //         let { data } = await axios.get(`http://localhost:8000/t/${chatId}`)
-    //         console.log(data)
-            
-    //         if(data){
-    //             let { messages, receiverUserId, chatId, receiverUser, user } = data;
-
-    //             setReceiverUser(receiverUser);
-    //             setReceiverUserId(receiverUserId);
-    //             setMessages(messages);
-    //             setChatId(chatId);
-    //             setAuthUser(user);
-    //         }
-            
-    //     } catch (error) {
-    //        console.log(error);
-    //     }
-    // }       
-        
-    // const [receiverUser, setReceiverUser] = useState(undefined)
-    // const [receiverUserId, setReceiverUserId] = useState(undefined)
-    // const [messages, setMessages] = useState(undefined)
-    // const [chatId, setChatId] = useState(undefined)
-    // const [authUser, setAuthUser] = useState(undefined)
-
   return (
     <AuthenticatedLayout user={auth.user}>
-        <div class="d-flex h-screen">
+        <div className="d-flex h-screen">
             <div id="inbox-chats" class="col-4 d-flex flex-column h-screen border-r-[2px] border-[#202020]" >
-                <div class="">
+                <div className="">
                     <div className='px-4 pt-4'>
                         <h2 className='text-white'>{ auth.user.username }</h2>
-                        <p class="py-2 text-white">Messages</p>
+                        <p className="py-2 text-white">Messages</p>
                     </div>
                     {chats.map((chat) => {
                         let userAuth = auth.user;
                         let receiverUser = chat.users.find((user) => user.id !== userAuth.id);
+                        {console.log(receiverUser.profile)}
 
                         /* let hasUnseenMessages = notifications.some( message => message.chat_id === chat.id) */
 
@@ -66,7 +36,7 @@ function Index({ chats, auth, children }) {
                                     {/* make a function that calls an api endpoint where I get data an with that data therefore render the chat in the section below */}
                                     <div /* onClick={() => retreiveChatData(chat.id)} */ className={`d-flex gap-2 align-items-center cursor-pointer`}>
                                         <div className="w-25">
-                                            <img className="w-100 rounded-circle" /* src={receiverUser.profile.profileImage} */ alt="receiver-profile-picture" />
+                                            <img className="w-100 rounded-circle" src={ `/storage/${receiverUser.profile?.image}` } alt="receiver-profile-picture" />
                                         </div>
                                         <p className="m-0 text-white">{receiverUser.username}</p>
                                     </div>
