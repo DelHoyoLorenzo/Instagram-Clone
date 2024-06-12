@@ -38,26 +38,18 @@ class InboxController extends Controller
         
         // TODO I should return the chats ordered by time, on a DESC way
 
-        /* dd($existingChat); */
-
         if ($existingChat) {
-            dd('entre');
-            return redirect()->action([InboxController::class, 'show']);
+            return redirect()->to('/t/'.$existingChat->id);
         }
 
         // case 1: first time auth user talks to receiver user
-        // create and return the chat with no messages in it, and also all the chats that the user has and also which ones that he received from others
-        
         // Create a new chat
         $newChat = new Chat();
         $newChat->save();
-        $chats = Chat::whereHas('users', function ($query) use ($receiver_user_id) {
-                $query->where('user_id', $receiver_user_id);
-        })->get();
 
         // Attach users to the new chat
         $newChat->users()->attach([$user->id, $receiver_user_id]);
 
-        return redirect()->action([InboxController::class, 'show']);
+        return redirect()->to('/t/'.$newChat->id);
     }
 }

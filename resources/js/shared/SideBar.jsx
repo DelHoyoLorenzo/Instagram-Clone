@@ -2,12 +2,15 @@ import { NotificationContext, useNotifications } from '@/Contexts/NotificationCo
 import { InertiaLink } from '@inertiajs/inertia-react';
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from '@inertiajs/react'
+import MiniSideBar from './MiniSideBar';
 
 function SideBar({user}) {
-    
+    const [miniSideBar, setMiniSideBar] = useState(false);
+    const [searchClicked, setSearchClicked] = useState(false);
+
     let { notifications } = useNotifications();
 
-  return (
+  return !miniSideBar ? (
     <nav class="navbar navbar-expand-md navbar-light shadow-sm d-flex flex-column w-44 h-screen border-r-[2px] border-[#202020] w-[16%]" >
         <div class="d-flex flex-column justify-content-around w-75 h-100">
             <Link class="navbar-brand text-white" href="/">
@@ -20,12 +23,11 @@ function SideBar({user}) {
                         <p class="m-0">Home</p>
                     </div>
                 </Link>
-                <Link href="" class="text-decoration-none text-white">
-                    <div class="d-flex gap-3 align-items-center">
-                        <svg aria-label="Search" class="" fill="currentColor" height="28" role="img" viewBox="0 0 24 24" width="28"><title>Search</title><path d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="16.511" x2="22" y1="16.511" y2="22"></line></svg>
-                        <p class="m-0">Search</p>
-                    </div>
-                </Link>
+
+                <div onClick={()=> {setMiniSideBar(!miniSideBar); setSearchClicked(true)}} class="d-flex gap-3 align-items-center text-white hover:cursor-pointer">
+                    <svg aria-label="Search" class="" fill="currentColor" height="28" role="img" viewBox="0 0 24 24" width="28"><title>Search</title><path d="M19 10.5A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 8.5 8.5Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="16.511" x2="22" y1="16.511" y2="22"></line></svg>
+                    <p class="m-0">Search</p>
+                </div>
 
                 <Link href="" class="text-decoration-none text-white">
                     <div class="d-flex gap-3 align-items-center">
@@ -33,7 +35,7 @@ function SideBar({user}) {
                         <p class="m-0">Create</p>
                     </div>
                 </Link>
-                <Link href="/inbox" class="text-decoration-none text-white">
+                <Link href="/inbox" onClick={()=> setMiniSideBar(true)} class="text-decoration-none text-white">
                     <div class="d-flex gap-3 align-items-center">
                         <svg aria-label="Messenger" fill="currentColor" height="28" role="img" viewBox="0 0 24 24" width="28"><title>Messenger</title><path d="M12.003 2.001a9.705 9.705 0 1 1 0 19.4 10.876 10.876 0 0 1-2.895-.384.798.798 0 0 0-.533.04l-1.984.876a.801.801 0 0 1-1.123-.708l-.054-1.78a.806.806 0 0 0-.27-.569 9.49 9.49 0 0 1-3.14-7.175 9.65 9.65 0 0 1 10-9.7Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="1.739"></path><path d="M17.79 10.132a.659.659 0 0 0-.962-.873l-2.556 2.05a.63.63 0 0 1-.758.002L11.06 9.47a1.576 1.576 0 0 0-2.277.42l-2.567 3.98a.659.659 0 0 0 .961.875l2.556-2.049a.63.63 0 0 1 .759-.002l2.452 1.84a1.576 1.576 0 0 0 2.278-.42Z" fill-rule="evenodd"></path></svg>
                         <p class="m-0">Messages</p>
@@ -112,7 +114,7 @@ function SideBar({user}) {
             </div>
         </div>
     </nav>
-  )
+  ) : <MiniSideBar user={user} setMiniSideBar={setMiniSideBar} searchClicked={searchClicked}/>
 }
 
 export default SideBar

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\ProfileVisit;
 use App\Models\User; // Import the User model with the correct namespace
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,8 +13,6 @@ class ProfilesController extends Controller
     public function index(User $user)
     {
         $user_id = $user->id;
-        /* $following = auth()->user()->following; // does not work with following()*/
-        
         $user_requested = User::where('id', $user_id)
         ->with([
         'profile', 
@@ -23,8 +22,8 @@ class ProfilesController extends Controller
         }
         ])
         ->first();
-        // it is called eager loading
-        // or using load:
+
+        // it is called eager loading, could happen also by using load method:
 
         /* $user_requested = User::where('id', $user_id)
         ->with(['profile', 'following'])
@@ -47,7 +46,6 @@ class ProfilesController extends Controller
         ]);
         
         //we can save the counters in cache for 30 seconds and avoid reaching the database constantly
-        //
         /* $postCount = Cache::remember {
             'count.following.' $user->id,
 
@@ -86,5 +84,31 @@ class ProfilesController extends Controller
         //we just grab the authenticated user, so I can only edit it if I am the user that is logged
 
         return redirect('/profile/'.$user->id);
+    }
+
+    public function visit(Profile $profile)
+    {
+        $authUser = auth()->user();
+
+        $visited_profile = ProfileVisit::where('user_id', $authUser->id)
+        ->where('profile_id', $profile->id)
+        ->first();
+
+        if (!$visited_profile) {
+            $visited_profile = ProfileVisit::create([
+                'user_id' => $authUser->id,
+                'profile_id' => $profile->id
+            ]);
+        }
+
+        return response()->json(['visitedProfile' => $visited_profile]);
+    }
+
+    public function retreive()
+    {
+        $visited_profiles = auth()->user()->visitedProfiles()->with(['user', 'profile'])->get(); // I realized that I have to put () on relation methods when I am getting data from a initalized model
+        /* $visited_profiles = ProfileVisit::where('user_id', $authUser->id)->get(); */
+
+        return response()->json(['visitedProfiles' => $visited_profiles]);
     }
 }

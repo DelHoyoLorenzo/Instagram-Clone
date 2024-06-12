@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Chat::class);
     }
+
+    public function visitedProfiles()
+    {
+        return $this->hasMany(ProfileVisit::class, 'user_id');
+    }
 }

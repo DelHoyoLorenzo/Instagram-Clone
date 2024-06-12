@@ -42,7 +42,7 @@ function Index({ user, followers, following, auth, isFollowed }) {
                             </div>
                             ) : 
                             (
-                            <Link href={`/chats/${ user.profile.user_id }`}>
+                            <Link href={`/chats/${ user.id }`}>
                                 <button /* onClick={createChat} */ class="text-white mx-2 bg-[#262626] p-2 rounded-md">Message</button>
                             </Link>
                             )

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\Chats\InboxController;
 use App\Http\Controllers\Chats\ChatsController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,6 +26,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/user/{user}', [ProfilesController::class, 'index'])->name('profile.index');
+    Route::get('/search/{user}', [SearchController::class, 'index']);
 });
 
 //----------------profile----------------------------------------
@@ -33,7 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{user}', [ProfilesController::class, 'index'])->name('profile.index');
     Route::get('/profile/{user}/edit', [ProfilesController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/{user}', [ProfilesController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/visitProfile/{profile}', [ProfilesController::class, 'visit']);
+    Route::get('/getVisitedProfiles', [ProfilesController::class, 'retreive']);
+
+    /* Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); */
 });
 
 //----------------posts----------------------------------------
@@ -48,7 +53,7 @@ Route::middleware('auth')->group(function () {
 //----------------chats & messages-----------------------------------
 
 Route::get('/inbox', [App\Http\Controllers\Chats\InboxController::class, 'show'])->name('inbox')->middleware("auth");
-/* Route::get('/chats/{user}', [App\Http\Controllers\Chats\ChatsController::class, 'create'])->middleware("auth"); */
+Route::get('/chats/{user}', [App\Http\Controllers\Chats\InboxController::class, 'create'])->middleware("auth");
 Route::get('/t/{chat}', [App\Http\Controllers\Chats\ChatsController::class, 'show'])->name('chat')->middleware('auth');
 
 //----------------notifications-----------------------------------

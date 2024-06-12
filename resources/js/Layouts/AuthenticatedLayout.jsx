@@ -6,6 +6,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import SideBar from '@/shared/SideBar';
 import { NotificationProvider } from '@/Contexts/NotificationContext';
+import MiniSideBar from '@/shared/MiniSideBar';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
