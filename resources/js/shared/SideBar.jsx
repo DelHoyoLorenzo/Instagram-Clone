@@ -53,7 +53,6 @@ function SideBar({user}) {
 
                 <Link href={`/profile/${ user.id }`} class="text-decoration-none text-white">
                     <div class="d-flex gap-3 align-items-center">
-                        {/* {console.log(user)} */}
                         <img className="w-[28px] rounded-[40%] rounded-circle" src={`/storage/${user.profile?.image}`} alt="user-profile-image" />
                         <p class="m-0">Profile</p>
                     </div>

@@ -32,7 +32,8 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user()->load('profile'),
+                // when a user wants to log in $request->user() returns null, logically because the person is not logged yet
+                'user' => $request->user() ? $request->user()->load('profile') : null,
             ],
         ];
     }

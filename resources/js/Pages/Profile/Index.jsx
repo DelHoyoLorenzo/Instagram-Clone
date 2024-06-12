@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FollowButton from '@/Components/FollowButton'
 import { Link } from '@inertiajs/react'
 
-function Index({ user, followers, following, profile, auth, isFollowed }) {
+function Index({ user, followers, following, auth, isFollowed }) {
     // user could be either the authUser or a different one, profile is the profile I am retreiveng, it could be either the auth one or a different one
     const createChat = () => {
         axios.get(`http://localhost:8000/chats/${ user.profile.user_id }`)

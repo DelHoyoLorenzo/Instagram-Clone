@@ -12,12 +12,27 @@ class ProfilesController extends Controller
     public function index(User $user)
     {
         $user_id = $user->id;
-        $auth_profile = auth()->user()->profile;
         /* $following = auth()->user()->following; // does not work with following()*/
         
-        $user_requested = User::where('id', $user_id)->with(['profile', 'posts', 'following'])->first();
-        
-        /* $follows = $user_requested->following->contains($auth_user->id); */
+        $user_requested = User::where('id', $user_id)
+        ->with([
+        'profile', 
+        'following',
+        'posts' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }
+        ])
+        ->first();
+        // it is called eager loading
+        // or using load:
+
+        /* $user_requested = User::where('id', $user_id)
+        ->with(['profile', 'following'])
+        ->first();
+
+        $user_requested->load(['posts' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }]); */
 
         $isFollowed = auth()->user()->following->contains('user_id', $user_id);
 
@@ -26,7 +41,6 @@ class ProfilesController extends Controller
         return Inertia::render('Profile/Index', [
             'user' => $user_requested,
             'profile' => $user_requested->profile,
-            'authProfile'=> $auth_profile,
             'followers' => $followers,
             'isFollowed' => $isFollowed,
             'following' =>$user_requested->following,

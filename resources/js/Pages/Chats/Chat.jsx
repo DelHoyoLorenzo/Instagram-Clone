@@ -5,12 +5,8 @@ import Echo from 'laravel-echo'
 import React, { useEffect, useState } from 'react'
 
 function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
-    /* ['messages'=>$messages, 'chatId'=>$chat_id , 'user'=>$user,'receiverUser'=>$receiver_user, 'receiverUserId'=>$receiver_id] */
-    /* const { dispatch } = useNotifications(); */
-
     const [chatMessages, setChatMessages] = useState(messages);
     const [newMessages, setNewMessages] = useState([])
-
     const [values, setValues] = useState({
         content: "",
     })
@@ -23,12 +19,10 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
         }
         // swap seen attribute to true
         setSeenMessages();
-        
-        /*  window.Echo.channel('chat').listen('MessageSent', (e) => { */
 
         window.Echo.private(`chat.${auth.user.id}.${receiverUser.id}`) .listen('MessageSent', (e) => {
             setNewMessages(prevMessages => [...prevMessages, e.eventMessage]);
-            if(e.eventMessage.sender_user_id !== authUser.id){
+            if(e.eventMessage.sender_user_id !== auth.user.id){
                 setSeenMessages();
             }
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -54,7 +48,7 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
 
         let info = {
             content: values.content,
-            sender_user_id: userAuth.id,
+            sender_user_id: auth.user.id,
             receiver_user_id: receiverUser.id,
             chat_id: chatId
         }
@@ -72,7 +66,7 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
         }
     }
 
-    async function setSeenMessages(){
+    const setSeenMessages = async () => {
         let info = {
             userId: auth.user.id,
         }
@@ -95,7 +89,7 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
 
     { chatMessages ? (<div class="d-flex flex-column justify-content-between w-full max-h-full">
         <div class="p-3 px-2 border-b-[2px] border-[#202020]" >
-            <a href="/messages/{{ $chatId }}" class="text-decoration-none" id="chatLink">
+            <a href={`/profile/${ receiverUser.id }`} class="text-decoration-none" id="chatLink">
                 <div class="d-flex gap-2 align-items-center text-white">
                     <div className='w-[10%]'>
                         <img class="w-100 rounded-circle" src={ `/storage/${receiverUser.profile?.image}` } alt="receiver-profile-picture" />
@@ -107,7 +101,7 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
         <div id="messages" class="px-2 mb-[10px] overflow-x-hidden overflow-y-scroll max-h-full">
             {chatMessages.map((message, index) => (
                 <div key={index} className="w-full">
-                    {userAuth.id !== message.sender_user_id && (
+                    {auth.user.id !== message.sender_user_id && (
                         <div className="py-1">
                             <div className="d-flex align-items-center gap-2">
                                 <div id="receiver-profile-picture">
@@ -119,7 +113,7 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
                             </div>
                         </div>
                     )}
-                    {userAuth.id === message.sender_user_id && (
+                    {auth.user.id === message.sender_user_id && (
                         <div className="py-1">
                             <div className="d-flex align-items-center justify-content-end gap-2">
                                 <p className="m-0 text-white p-2 rounded-xl bg-[#3797F0]">{message.content}</p>
@@ -132,7 +126,7 @@ function Chat({ chats, chatId, messages, userId, user, receiverUser, auth }) {
             {/* {{-- event messages section --}} */}
 
             {newMessages ? (newMessages.map((m)=> {
-                return (userAuth.id === m.sender_user_id) ?
+                return (auth.user.id === m.sender_user_id) ?
                 (
                     <div key={m.id} className="py-1">
                     <div className="d-flex align-items-center justify-content-end gap-2">

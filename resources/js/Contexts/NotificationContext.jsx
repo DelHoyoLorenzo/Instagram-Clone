@@ -1,16 +1,13 @@
 import { createContext, useEffect, useState, useContext, useReducer } from "react";
 axios.defaults.withCredentials = true;
 
-/* const URL = process.env.FRONT_URL;
-console.log(URL) */
-
 export const NotificationContext = createContext()
 
 export const useNotifications = () => {
     return useContext(NotificationContext);
 };
 /* 
-Hook Personalizado: useNotifications encapsula useContext(NotificationContext) para simplificar y centralizar el acceso al contexto.
+Custom Hook: useNotifications involves useContext(NotificationContext) to simplify and give acces to the context.
 Ventajas: Encapsulamiento, reutilización y simplicidad en los componentes consumidores. 
 */
 
@@ -34,6 +31,7 @@ export const NotificationProvider = ({ children, user }) => { // fill the contex
           case 'FETCH_NOTIFICATIONS':
               fetchData();
               return state;
+
           default:
               return state;
       }
@@ -51,7 +49,7 @@ export const NotificationProvider = ({ children, user }) => { // fill the contex
         });
         
     }, []);
-    
+
     return (
       <NotificationContext.Provider value={{notifications, dispatch}}>
         {children}
